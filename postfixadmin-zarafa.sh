@@ -70,7 +70,7 @@ ZMYSQLEXEC="$MYSQL ${_zdatabase_name} -u${_zdatabase_user} -p${_zdatabase_passwo
 if [[ ! -e ${_lastlog} ]];
 then
     # _log=$($MYSQLEXEC "SELECT * FROM log WHERE ORDER BY timestamp ASC;")
-    $MYSQLEXEC "SELECT MAX(timestamp) FROM log;" > ${_lastlog}
+    $MYSQLEXEC "SELECT NOW();" > ${_lastlog}
 fi
 
 _logworked=$(cat ${_lastlog})
