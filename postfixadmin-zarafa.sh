@@ -67,13 +67,14 @@ ZMYSQLEXEC="$MYSQL ${_zdatabase_name} -u${_zdatabase_user} -p${_zdatabase_passwo
 ### APPLICATION
 
 # use only new log entries "
-if [[ -e ${_lastlog} ]];
+if [[ ! -e ${_lastlog} ]];
 then
-    _logworked=$(cat ${_lastlog})
-    _log=$($MYSQLEXEC "SELECT * FROM log WHERE timestamp > '${_logworked}' ORDER BY timestamp ASC;")
-else 
-    _log=$($MYSQLEXEC "SELECT * FROM log WHERE ORDER BY timestamp ASC;")
+    # _log=$($MYSQLEXEC "SELECT * FROM log WHERE ORDER BY timestamp ASC;")
+    $MYSQLEXEC "SELECT MAX(timestamp) FROM log;" > ${_lastlog}
 fi
+
+_logworked=$(cat ${_lastlog})
+_log=$($MYSQLEXEC "SELECT * FROM log WHERE timestamp > '${_logworked}' ORDER BY timestamp ASC;")
 
 if [[ -z ${_log} ]];
 then

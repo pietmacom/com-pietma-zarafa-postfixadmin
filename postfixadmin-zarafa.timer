@@ -3,7 +3,8 @@ Description=postfixadmin-zarafa
 
 [Timer]
 Persistent=true
-OnCalendar=10s
+OnBootSec=10
+OnUnitActiveSec=10
 Unit=postfixadmin-zarafa.service
 
 [Install]
