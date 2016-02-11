@@ -1,0 +1,13 @@
+Install
+
+Edit /etc/webapps/postfixadmin/config.local.php and add this at the end
+
+include('/etc/webapps/postfixadmin/config.zarafa.php');
+?>
+
+
+Enable Service
+
+systemctl enable postfixadmin-zarafa.service
+systemctl enable postfixadmin-zarafat.timer
+systemctl start postfixadmin-zarafa.timer
