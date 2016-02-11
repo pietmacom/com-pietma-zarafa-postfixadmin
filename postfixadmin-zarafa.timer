@@ -1,0 +1,10 @@
+[Unit]
+Description=postfixadmin-zarafa
+
+[Timer]
+Persistent=true
+OnCalendar=10s
+Unit=postfixadmin-zarafa.service
+
+[Install]
+WantedBy=multi-user.target
