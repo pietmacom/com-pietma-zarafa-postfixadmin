@@ -1,13 +1,16 @@
+
+Zarafa-Postfixadmin is created with postfixadmin 2.93
+
+
 Install
 
-Edit /etc/webapps/postfixadmin/config.local.php and add this at the end
+Insert in server-block of nginx config ... include /etc/webapps/zarafa-postfixadmin/nginx-location.conf; 
+Insert in /etc/php/php-fpm.conf ... include=/etc/php/fpm.d/*.conf
 
-include('/etc/webapps/postfixadmin/config.zarafa.php');
-?>
+Run ... systemctl restart php-fpm
+Run ... /usr/share/doc/zarafa-postfixadmin/install
+Visit ... https://alarm/zarafa-postfixadmin/setup.php and create a superadmin account.
 
-
-Enable Service
-
-systemctl enable postfixadmin-zarafa.service
-systemctl enable postfixadmin-zarafat.timer
-systemctl start postfixadmin-zarafa.timer
+Run ... systemctl enable zarafa-postfixadmin-worker.service
+Run ... systemctl enable zarafa-postfixadmin-worker.timer
+Run ... systemctl start zarafa-postfixadmin-worker.service
