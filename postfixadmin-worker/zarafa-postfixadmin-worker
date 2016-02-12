@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-_lastlog="/var/lib/zarafa-postfixadmin/lastlog"
+_lastlog="/var/lib/zarafa-postfixadmin-worker/lastlog"
 
 PHP=$(which php)
 MYSQL=$(which mysql)
