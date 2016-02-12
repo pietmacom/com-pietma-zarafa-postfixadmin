@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-_lastlog="/var/lib/postfixadmin-zarafa/lastlog"
+_lastlog="/var/lib/zarafa-postfixadmin/lastlog"
 
 PHP=$(which php)
 MYSQL=$(which mysql)
@@ -10,7 +10,7 @@ ZARAFAADMIN=$(which zarafa-admin)
 # SETTINGS FROM Postfixadmin
 _settings=$($PHP --no-php-ini -d open_basedir=NULL << 'EOF'
 <?
-    include('/usr/share/webapps/postfixadmin/config.inc.php'); 
+    include('/usr/share/webapps/zarafa-postfixadmin/config.inc.php'); 
     echo $CONF['configured'] . "\n"; 		#1
     echo $CONF['database_host'] . "\n";		#2
     echo $CONF['database_user'] . "\n";		#3
@@ -78,7 +78,7 @@ _log=$($MYSQLEXEC "SELECT * FROM log WHERE timestamp > '${_logworked}' ORDER BY 
 
 if [[ -z ${_log} ]];
 then
-    echo "Nothing to do on" $(date)
+    #echo "Nothing to do on" $(date)
     exit
 fi
 

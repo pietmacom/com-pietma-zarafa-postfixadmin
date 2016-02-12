@@ -1,11 +1,11 @@
 [Unit]
-Description=postfixadmin-zarafa
+Description=zarafa-postfixadmin
 
 [Timer]
 Persistent=true
 OnBootSec=10
 OnUnitActiveSec=10
-Unit=postfixadmin-zarafa.service
+Unit=zarafa-postfixadmin-worker.service
 
 [Install]
 WantedBy=multi-user.target

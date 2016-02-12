@@ -1,7 +1,7 @@
 <?php
 
 /* 
- * DON'T MAKE CHANGES TO THIS FILE!
+ * THIS FILE CONTAINS COSTUMIZATIONS TO POSTFIXADMIN
  */
 
 $CONF['generate_password'] = 'YES';
@@ -45,5 +45,11 @@ function language_hook($PALANG, $language) {
     return $PALANG;
 }
 $CONF['language_hook'] = 'language_hook';
+
+
+// LOAD SETTINGS
+if (file_exists('/etc/webapps/zarafa-postfixadmin/config.local.php')) {
+    include('/etc/webapps/zarafa-postfixadmin/config.local.php');
+}
 
 ?>

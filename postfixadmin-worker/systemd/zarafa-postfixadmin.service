@@ -1,0 +1,12 @@
+[Unit]
+Description=Description=zarafa-postfixadmin
+
+[Service]
+Type=simple
+ExecStart=/usr/share/zarafa-postfixadmin-worker/zarafa-postfixadmin-worker
+WorkingDirectory=/var/lib/zarafa-postfixadmin-worker
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
