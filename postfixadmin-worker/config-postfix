@@ -1,0 +1,32 @@
+#!/bin/sh -e
+
+# SETTINGS FROM Postfixadmin
+_settings=$($PHP --no-php-ini -d open_basedir=NULL << 'EOF'
+<?
+    include('/usr/share/webapps/zarafa-postfixadmin/config.inc.php'); 
+    echo $CONF['configured'] . "\n"; 		#1
+    echo $CONF['database_host'] . "\n";		#2
+    echo $CONF['database_user'] . "\n";		#3
+    echo $CONF['database_password'] . "\n";	#4
+    echo $CONF['database_name'] . "\n";		#5
+?>
+EOF
+)
+if [[ $(echo -n "$_settings" | sed -n "1p") != "1" ]];
+then
+    echo "Postfixadmin is not set up."
+    exit
+fi
+
+_database_host=$(echo -n "$_settings" | sed -n "2p")
+_database_user=$(echo -n "$_settings" | sed -n "3p")
+_database_password=$(echo -n "$_settings" | sed -n "4p")
+_database_name=$(echo -n "$_settings" | sed -n "5p")
+  
+if [[ ${_database_host} == localhost:/* ]];
+then
+    _destination="-S"$(echo -n "${_database_host}" | sed "s/^.*\://g")
+else
+    _destination="-h"${_database_host}
+fi
+MYSQLEXEC="$MYSQL ${_database_name} -u${_database_user} -p${_database_password} ${_destination} -s -N  -e"

@@ -1,0 +1,115 @@
+#!/bin/sh -e
+
+#
+# requires $ZMYSQLEXEC
+#
+
+add_delegate() {
+	_zusername=$1
+	_znewdelegateusername=$2
+	
+	echo "Adding delegate ${_znewdelegateusername} for user ${_zusername}"
+	$ZARAFAADMIN -u "${_zusername}" --add-sendas "${_znewdelegateusername}"
+}
+
+remove_all_delegates() {
+	_zusername=$1
+
+	echo "Removing all delegates"
+    _zuserid=$($ZMYSQLEXEC "SELECT objectid FROM objectproperty WHERE value='${_zusername}' AND propname='loginname';")
+	_zsendas=$($ZMYSQLEXEC "SELECT objectid FROM objectrelation WHERE parentobjectid='${_zuserid}' AND relationtype='6';")    
+
+	if [[ -z ${_zsendas} ]];
+	then
+		return 0;
+	fi
+	
+	echo "${_zsendas}" | while read _zdelegateid
+	do
+		_zdelegateusername=$($ZMYSQLEXEC "SELECT value FROM objectproperty WHERE propname='loginname' AND objectid='${_zdelegateid}'")
+		if [[ -z ${_zsendas} ]];
+		then
+			continue
+		fi
+		
+		echo "Removing delegate ${_zdelegateusername} from user ${_zusername}"
+		$ZARAFAADMIN -u "${_zusername}" --del-sendas "${_zdelegateusername}"
+	done
+}
+
+create_user() {
+	_email=$1
+	_password=$2
+	_name=$3
+	_active=$4
+
+    echo "Creating user ${_email}"
+    # zarafa defines inactive users
+    if [[ ${_active} == "0" ]];
+    then
+    	_inactive="1"
+    else
+    	_inactive="0"
+    fi
+
+    # zarafa doesn't allow empty full names
+    if [[ -z ${_name} ]];
+    then
+		_name=$(echo "${_email}" | sed "s/@.*//g")
+    fi
+
+    $ZARAFAADMIN -c "${_email}" -p "${_password}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
+    $ZARAFAADMIN --create-store "${_email}"
+}
+
+edit_user() {
+	_zusername=$1
+	_email=$2
+	_password=$3
+	_name=$4
+	_active=$5
+
+    echo "Updating user ${_zusername} with email ${_email}"	    
+	# zarafa defines inactive users
+    if [[ ${_active} == "0" ]];
+    then
+    	_inactive="1"
+    else
+    	_inactive="0"
+    fi
+
+    # zarafa doesn't allow empty full names
+    if [[ -z ${_name} ]];
+    then
+	    _name=$(echo "${_email}" | sed "s/@.*//g")
+    fi
+
+	_zuserstore=$($ZMYSQLEXEC "SELECT HEX(guid) FROM stores WHERE user_name='${_zusername}';")
+    if [[ ${_password} == "updated" ]];
+    then
+		echo "Password unchanged"	
+        $ZARAFAADMIN -u "${_zusername}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
+    else
+        echo "Password changed"
+        $ZARAFAADMIN -u "${_zusername}" -p "${_password}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
+    fi            
+                
+    # check for existing store              
+    $ZARAFAADMIN --details "${_zusername}" > /dev/null
+    if [[ $? -ne 0 ]];
+    then
+		echo "Reattache store to user ${_zusername}"
+        $ZARAFAADMIN -u "${_zusername}" --hook-store "${_zuserstore}"
+    fi	
+}
+
+delete_user() {
+	_zusername=$1
+	
+	echo "Deleting user ${_zusername}"
+	_zuserstore=$($ZMYSQLEXEC "SELECT HEX(guid) FROM stores WHERE user_name='${_zusername}';")
+
+    $ZARAFAADMIN --unhook-store "${_zusername}"
+    $ZARAFAADMIN --remove-store "${_zuserstore}"
+    $ZARAFAADMIN -d "${_zusername}"
+}
