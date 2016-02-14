@@ -29,7 +29,7 @@ INSTALLATION
   - https://YOUR_DOMAIN/zarafa-postfixadmin/setup.php
 
 
-DIFFERENZES TO WELL KNOWN POSTFIXADMIN
+DIFFERENCES TO WELL KNOWN POSTFIXADMIN
 
  - Mailbox passwords are not hidden
  - Mailbox passwords are only treaded as start password and deleted (to 'updated') when transfered to Zarafa
@@ -82,14 +82,16 @@ USE CASES
   - Create inactive Zarafa account with alias=username, alias=email, username from local part of email (me@test.de -> me), random password
   - Add destination in sendas
 
- 3) Edit Alias - To destination unknown in Zarafa
- 4) Delete Alias
+ 4) Edit Alias - Active state
+  - Remove all destinations from sendas
+  - If active -> Add destination in sendas
+
+ 4) Edit Alias - To destination unknown in Zarafa
+ 5) Delete Alias
   - Remove all destinations from sendas
   - Delete inactive Zarafa account
  
- 5) Edit Alias - Active state
-  - Remove all destinations from sendas
-  - If active -> Add destination in sendas
+
   
 
   	
