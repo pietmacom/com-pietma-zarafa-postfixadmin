@@ -1,5 +1,13 @@
 #!/bin/sh -e
 
+#
+# https://git.pietma.com/pietma/zarafa-postfixadmin
+#
+#
+#
+#
+
+
 _lastlog="/var/lib/zarafa-postfixadmin-worker/lastlog"
 
 PHP=$(which php)
@@ -99,6 +107,9 @@ do
     _zusername=$(echo "${_zuser}" | cut -f2)
     # "
     
+    _zuserstore=$($ZMYSQLEXEC "SELECT HEX(guid) FROM stores WHERE user_name='${_zusername}';")	
+    #"    
+    
     case ${_action} in
     *alias)
 
@@ -116,10 +127,19 @@ do
 	_znewdelegateid=$(echo "${_znewdelegate}" | cut -f1)
 	_znewdelegateusername=$(echo "${_znewdelegate}" | cut -f2)
 	#"
-	
+
+        # locale part of the email me@you.de -> me	
+	_name=$(echo "${_address}" | sed "s/@.*//g")	
+		
 	#  CHECKS
 	case ${_action} in
 	create*)
+	    if [[ ! -z ${_zuser} ]];
+	    then
+		echo "Treating existing local alias as edit"
+		_action="edit_alias"    
+	    fi
+    
 	    if [[ -z ${_znewdelegateid} ]];
     	    then
         	echo "Skipping not existing local target"
@@ -163,28 +183,11 @@ do
 	#  WORK
         case ${_action} in
         create*)
-    	    # locale part of the email me@you.de -> me
-    	    _name=$(echo "${_address}" | sed "s/@.*//g")
             _password=$(< /dev/urandom tr -dc 0-9 | head -c16)$(< /dev/urandom tr -dc A-Za-z0-9 | head -c16)
 
-            if [[ -z ${_zusername} ]];
-            then
-    		echo "Creating user ${_address}"            
-        	$ZARAFAADMIN -c "${_address}" -p "${_password}" -f "${_name}" -e "${_address}" -a "0" -n "1"
-		$ZARAFAADMIN --create-store "${_address}"
-            else
-                # update existing with its username         
-                echo "Reenabling user ${_zusername} with email ${_address}"
-                $ZARAFAADMIN -u "${_zusername}" -p "${_password}" -f "${_name}" -e "${_address}" -a "0" -n "1"
-		
-		# check for existing store		
-                $ZARAFAADMIN --details "${_zusername}" > /dev/null 
-                if [[ $? -ne 0 ]];
-                then
-		    echo "Reattache store to user ${_zusername}"                            
-                    $ZARAFAADMIN -u "${_zusername}" --hook-store "${_zuserstore}"
-                fi
-            fi
+	    echo "Creating user ${_address}"            
+    	    $ZARAFAADMIN -c "${_address}" -p "${_password}" -f "${_name}" -e "${_address}" -a "0" -n "1"
+	    $ZARAFAADMIN --create-store "${_address}"
             
 	    if [[ ${_active} == "1" ]];
     	    then
@@ -193,8 +196,6 @@ do
     	    fi
         ;;
         delete*)
-    	    # TODO Allow to keep more delegates
-
 	    # Remove delegates
 	    _zsendas=$($ZMYSQLEXEC "SELECT objectid FROM objectrelation WHERE parentobjectid='${_zuserid}' AND relationtype='6';")    
 	    if [[ ! -z ${_zsendas} ]];
@@ -209,7 +210,7 @@ do
 	    fi
 	    
 	    echo "Deleting user ${_zusername}"
-	    _zuserstore=$($ZMYSQLEXEC "SELECT HEX(guid) FROM stores WHERE user_name='${_zusername}';")
+
 	    $ZARAFAADMIN --unhook-store "${_zusername}"
 	    $ZARAFAADMIN --remove-store "${_zuserstore}"
 	    $ZARAFAADMIN -d "${_zusername}"
@@ -217,6 +218,26 @@ do
 	    # dummy for highlighting in mc "
         ;;
         edit*)
+    	    # TODO Allow to keep more delegates
+            # update existing with its username         
+            echo "Edit user ${_zusername} with email ${_address}"
+            $ZARAFAADMIN -u "${_zusername}" -f "${_name}" -e "${_address}" -a "0" -n "1"
+		
+	    # check for existing store		
+            $ZARAFAADMIN --details "${_zusername}" > /dev/null 
+            if [[ $? -ne 0 ]];
+            then
+		echo "Reattache store to user ${_zusername}"                            
+                $ZARAFAADMIN -u "${_zusername}" --hook-store "${_zuserstore}"
+            fi
+
+	    if [[ ${_active} == "1" ]];
+    	    then
+    		echo "Adding delegate ${_znewdelegateusername} for user ${_address}"
+        	$ZARAFAADMIN -u "${_address}" --add-sendas "${_znewdelegateusername}"
+    	    fi        
+        
+    	    echo "Edit delegates"
 	    _zsendas=$($ZMYSQLEXEC "SELECT objectid FROM objectrelation WHERE parentobjectid='${_zuserid}' AND relationtype='6';")
             if [[ ! -z ${_zsendas} ]];
             then
@@ -243,9 +264,6 @@ do
 	_local_part=$(echo "${_mailbox}" | cut -f4)
 	_active=$(echo "${_mailbox}" | cut -f5)
 
-	_zuserstore=$($ZMYSQLEXEC "SELECT HEX(guid) FROM stores WHERE user_name='${_data}';")
-	# "
-
 	#  CHECKS
 	# zarafa defines inactive users
 	if [[ ${_active} == "0" ]];
@@ -263,6 +281,11 @@ do
 
         case ${_action} in
         create*)
+            if [[ ! -z ${_zuser} ]];
+            then
+                echo "Treating existing local mailbox as edit"
+                _action="edit_mailbox"
+            fi
         ;;
         delete*)
     	    if [[ -z ${_zuser} ]];
@@ -283,25 +306,11 @@ do
 	#  WORK
 	case ${_action} in
 	create*)
-	    if [[ -z ${_zusername} ]];
-	    then
-		# create with e-mail as username	    
-		echo "Creating user ${_username} with email ${_username}"		
-	    	$ZARAFAADMIN -c "${_username}" -p "${_password}" -f "${_name}" -e "${_username}" -a "0" -n "${_inactive}"
-		$ZARAFAADMIN --create-store "${_username}"
-	    else
-		# update existing with its username	    
-	    	echo "Reenabling user ${_zusername} with email ${_username}"
-	    	$ZARAFAADMIN -u "${_zusername}" -p "${_password}" -f "${_name}" -e "${_username}" -a "0" -n "${_inactive}"
-
-		# check for existing store
-                $ZARAFAADMIN --details "${_zusername}" > /dev/null 
-                if [[ $? -ne 0 ]];
-                then
- 		    echo "Reattache store to user ${_zusername}"            
-                    $ZARAFAADMIN -u "${_zusername}" --hook-store "${_zuserstore}"
-                fi		
-	    fi
+	    # create with e-mail as username	    
+	    echo "Creating user ${_username} with email ${_username}"		
+	    $ZARAFAADMIN -c "${_username}" -p "${_password}" -f "${_name}" -e "${_username}" -a "0" -n "${_inactive}"
+	    $ZARAFAADMIN --create-store "${_username}"
+	    
 	    # remove password from database (set marker for password reset)
 	    $MYSQLEXEC "UPDATE mailbox SET password='updated' WHERE username='${_username}'";
 	;;
@@ -313,10 +322,8 @@ do
     	    $ZARAFAADMIN -d "${_zusername}"
 	;;
 	edit*)
-	    
     	    if [[ ${_password} == "updated" ]];
     	    then
-            	# disable account. real delete will follow.        	
         	echo "Updating user ${_zusername} with email ${_username}"
 		$ZARAFAADMIN -u "${_zusername}" -f "${_name}" -e "${_username}" -a "0" -n "${_inactive}"
     	    else
