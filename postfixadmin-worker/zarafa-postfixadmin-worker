@@ -14,10 +14,6 @@ source $(dirname $0)/functions-zarafa
 
 _lastlog="/var/lib/zarafa-postfixadmin-worker/lastlog"
 
-PHP=$(which php)
-MYSQL=$(which mysql)
-ZARAFAADMIN=$(which zarafa-admin)
-
 # use only new log entries "
 if [[ ! -e ${_lastlog} ]];
 then
@@ -194,7 +190,7 @@ do
 			delete_user "${_zusername}"
 		;;
 		edit*)
-			edit_user "${_zusername}" "${_address}" "${_password}" "${_name}" "${_active}"
+			edit_user "${_zusername}" "${_username}" "${_password}" "${_name}" "${_active}"
 
 			# remove password from database (set marker for password reset)
 			$MYSQLEXEC "UPDATE mailbox SET password='updated' WHERE username='${_email}'";    	    

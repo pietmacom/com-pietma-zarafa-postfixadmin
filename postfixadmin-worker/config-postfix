@@ -1,5 +1,8 @@
 #!/bin/sh -e
 
+PHP=$(which php)
+MYSQL=$(which mysql)
+
 # SETTINGS FROM Postfixadmin
 _settings=$($PHP --no-php-ini -d open_basedir=NULL << 'EOF'
 <?
