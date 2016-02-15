@@ -55,6 +55,7 @@ do
 		if [[ ! -z ${_mailbox} ]];
 		then
 			echo "Skipped automatic alias for mailbox"
+			echo "${_ltimestamp}" > ${_lastlog}
 			continue
 		fi
 
@@ -83,12 +84,14 @@ do
 			if [[ -z ${_znewdelegateid} ]];
 			then
 				echo "Skipping not existing local delegate"
+				echo "${_ltimestamp}" > ${_lastlog}
 				continue
 			fi
 
 			if [[ ${_active} == "0" ]];
 			then
 				echo "Skipping creation of inactive alias"
+				echo "${_ltimestamp}" > ${_lastlog}
 				continue
 			fi
 		;;
@@ -96,6 +99,7 @@ do
 			if [[ -z ${_zuser} ]];
 			then
 				echo "Skipping unknown local alias"
+				echo "${_ltimestamp}" > ${_lastlog}
 				continue
 			fi
 		;;	
@@ -166,6 +170,7 @@ do
 			if [[ -z ${_zuser} ]];
 			then
 				echo "User with email ${_ldata} not found in Zarafa"
+				echo "${_ltimestamp}" > ${_lastlog}			
 				continue
 			fi
 		;;
@@ -173,9 +178,10 @@ do
 			if [[ -z ${_zuser} ]];
 			then
 				echo "User with email ${_ldata} not found in Zarafa"
+				echo "${_ltimestamp}" > ${_lastlog}
 				continue
 			fi
-		;;        
+		;;
 		esac
 
 		#  WORK
@@ -208,5 +214,3 @@ do
     # mark position as done
     echo "${_ltimestamp}" > ${_lastlog}
 done
-
-
