@@ -89,7 +89,7 @@ USE CASES
       - Deletes Zarafa account userstore and account 
        
        
-     Alias Use Cases
+ Alias Use Cases
     
      1) Create Alias - To destination unknown in Zarafa
       - Action is skipped (No change to Zarafa)
