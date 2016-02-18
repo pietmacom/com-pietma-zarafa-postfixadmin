@@ -22,8 +22,7 @@ INSTALLATION
   - sudo systemctl restart nginx
   - sudo systemctl restart php-fpm
   - sudo systemctl enable zarafa-postfixadmin-worker.service
-  - sudo systemctl enable zarafa-postfixadmin-worker.service
-  - sudo systemctl enable zarafa-postfixadmin-worker.timer
+  - sudo systemctl start zarafa-postfixadmin-worker.service
  
  - Visit and create a superadmin account
   - https://YOUR_DOMAIN/zarafa-postfixadmin/setup.php
