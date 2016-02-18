@@ -10,28 +10,42 @@ INTRODUCTION
 
 INSTALLATION
 
- - Run 
-  - sudo pacman -Sy pietma/zarafa-postfixadmin pietma/zarafa-postfixadmin-worker
+ Add the repository to /etc/pacman.conf at the end of the file.
+    
+    [pietma]
+    SigLevel = Optional TrustAll
+    Server = http://repository.pietma.com/nexus/content/repositories/archlinux/$arch/$repo
 
- - Insert in 
+ Synchronize packages and download a fresh copy of the master package list from the servers
+
+    sudo pacman -Sy
+
+ Install the packages
+    
+    sudo pacman -Sy pietma/zarafa-postfixadmin pietma/zarafa-postfixadmin-worker
+
+ Insert in 
+ 
   - /etc/nginx/nginx.conf in any server block -> include /etc/webapps/zarafa-postfixadmin/nginx-location.conf; 
   - /etc/php/php-fpm.conf -> include=/etc/php/fpm.d/*.conf
 
- - Run
+ Run
+ 
   - sudo /usr/share/doc/zarafa-postfixadmin/install
   - sudo systemctl restart nginx
   - sudo systemctl restart php-fpm
   - sudo systemctl enable zarafa-postfixadmin-worker.service
   - sudo systemctl start zarafa-postfixadmin-worker.service
  
- - Visit and create a superadmin account
-  - https://YOUR_DOMAIN/zarafa-postfixadmin/setup.php
+ Visit and create a superadmin account
+ 
+  - https://YOUR_HOSTNAME/zarafa-postfixadmin/setup.php
 
 
 DIFFERENCES TO WELL KNOWN POSTFIXADMIN
 
  - Mailbox passwords are not hidden
- - Mailbox passwords are only treaded as start password and deleted (to 'updated') when transfered to Zarafa
+ - Mailbox passwords are only treated as start password and deleted when transfered to Zarafa
  - Mailbox passwords are only managed by Zarafas DB-Plugin
 
 
