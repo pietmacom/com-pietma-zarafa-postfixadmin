@@ -8,7 +8,7 @@ INTRODUCTION
    - Security -> no root / sudo 
 
 
-INSTALLATION
+INSTALLATION FROM ARCHLINUX PACKAGE
 
  Add the repository to /etc/pacman.conf at the end of the file.
     
@@ -24,22 +24,25 @@ INSTALLATION
     
     sudo pacman -Sy pietma/zarafa-postfixadmin pietma/zarafa-postfixadmin-worker
 
- Insert in 
+ Insert in /etc/nginx/nginx.conf
  
-  - /etc/nginx/nginx.conf in any server block -> include /etc/webapps/zarafa-postfixadmin/nginx-location.conf; 
-  - /etc/php/php-fpm.conf -> include=/etc/php/fpm.d/*.conf
+  In any server block -> include /etc/webapps/zarafa-postfixadmin/nginx-location.conf; 
+
+ Insert in /etc/php/php-fpm.conf 
+ 
+   After [global] Group -> include=/etc/php/fpm.d/*.conf
 
  Run
  
-  - sudo /usr/share/doc/zarafa-postfixadmin/install
-  - sudo systemctl restart nginx
-  - sudo systemctl restart php-fpm
-  - sudo systemctl enable zarafa-postfixadmin-worker.service
-  - sudo systemctl start zarafa-postfixadmin-worker.service
+  sudo /usr/share/doc/zarafa-postfixadmin/install
+  sudo systemctl restart nginx
+  sudo systemctl restart php-fpm
+  sudo systemctl enable zarafa-postfixadmin-worker.service
+  sudo systemctl start zarafa-postfixadmin-worker.service
  
  Visit and create a superadmin account
  
-  - https://YOUR_HOSTNAME/zarafa-postfixadmin/setup.php
+  https://YOUR_HOSTNAME/zarafa-postfixadmin/setup.php
 
 
 DIFFERENCES TO WELL KNOWN POSTFIXADMIN
