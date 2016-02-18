@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 _pkgname="zarafa-postfixadmin"
-_pkgurl="https://alarm/zarafa-postfixadmin/setup.php"
+_pkgurl="https://YOUR_HOSTNAME/zarafa-postfixadmin/setup.php"
 _pkgconfig="/etc/webapps/zarafa-postfixadmin/config.local.php"
 _databasename="zarafapostfixadmin"
 _databaseuser="zarafapostfixadmin"

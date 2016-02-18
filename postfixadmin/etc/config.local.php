@@ -2,6 +2,8 @@
 
 /* 
  * THIS FILE CONTAINS COSTUMIZATIONS TO POSTFIXADMIN
+ *
+ * See https://git.pietma.com/pietma/com-pietma-zarafa-postfixadmin
  */
 
 $CONF['generate_password'] = 'YES';
