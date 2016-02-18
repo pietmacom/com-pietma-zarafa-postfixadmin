@@ -26,23 +26,23 @@ INSTALLATION FROM ARCHLINUX PACKAGE
 
  Insert in /etc/nginx/nginx.conf
  
-  In any server block -> include /etc/webapps/zarafa-postfixadmin/nginx-location.conf; 
+    In any server block -> include /etc/webapps/zarafa-postfixadmin/nginx-location.conf; 
 
  Insert in /etc/php/php-fpm.conf 
  
-   After [global] Group -> include=/etc/php/fpm.d/*.conf
+    After [global] Group -> include=/etc/php/fpm.d/*.conf
 
  Run
  
-  sudo /usr/share/doc/zarafa-postfixadmin/install
-  sudo systemctl restart nginx
-  sudo systemctl restart php-fpm
-  sudo systemctl enable zarafa-postfixadmin-worker.service
-  sudo systemctl start zarafa-postfixadmin-worker.service
+    sudo /usr/share/doc/zarafa-postfixadmin/install
+    sudo systemctl restart nginx
+    sudo systemctl restart php-fpm
+    sudo systemctl enable zarafa-postfixadmin-worker.service
+    sudo systemctl start zarafa-postfixadmin-worker.service
  
  Visit and create a superadmin account
  
-  https://YOUR_HOSTNAME/zarafa-postfixadmin/setup.php
+    https://YOUR_HOSTNAME/zarafa-postfixadmin/setup.php
 
 
 DIFFERENCES TO WELL KNOWN POSTFIXADMIN
