@@ -83,7 +83,7 @@ edit_user() {
     fi
 
 	_zuserstore=$($ZMYSQLEXEC "SELECT HEX(guid) FROM stores WHERE user_name='${_zusername}';")
-    if [[ ${_password} == "updated" ]];
+    if [[ ${_password} == "" ]];
     then
 		echo "Password unchanged"	
         $ZARAFAADMIN -u "${_zusername}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
