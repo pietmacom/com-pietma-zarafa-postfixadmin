@@ -39,7 +39,7 @@ $CONF['mailbox_struct_hook'] = 'mailbox_struct_admin_modify';
 function language_hook($PALANG, $language) {
     switch ($language) {
         default:
-            $PALANG['pCreate_mailbox_password_text'] = 'Initial password (generated when empty). Please change in Zarafa!';
+            $PALANG['pCreate_mailbox_password_text'] = 'Initial password (transferred / generated when empty). Please change in Zarafa!';
     }
 
     return $PALANG;

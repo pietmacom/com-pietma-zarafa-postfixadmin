@@ -14,7 +14,7 @@ remove_all_delegates() {
 	_zusername=$1
 
 	echo "Removing all delegates"
-    _zuserid=$($ZMYSQLEXEC "SELECT objectid FROM objectproperty WHERE value='${_zusername}' AND propname='loginname';")
+	_zuserid=$($ZMYSQLEXEC "SELECT objectid FROM objectproperty WHERE value='${_zusername}' AND propname='loginname';")
 	_zsendas=$($ZMYSQLEXEC "SELECT objectid FROM objectrelation WHERE parentobjectid='${_zuserid}' AND relationtype='6';")    
 
 	if [[ -z ${_zsendas} ]];
@@ -102,10 +102,10 @@ edit_user() {
 }
 
 delete_user() {
-	_zusername=$1
+    _zusername=$1
 	
-	echo "Deleting user ${_zusername}"
-	_zuserstore=$($ZMYSQLEXEC "SELECT HEX(guid) FROM stores WHERE user_name='${_zusername}';")
+    echo "Deleting user ${_zusername}"
+    _zuserstore=$($ZMYSQLEXEC "SELECT HEX(guid) FROM stores WHERE user_name='${_zusername}';")
 
     $ZARAFAADMIN --unhook-store "${_zusername}"
     $ZARAFAADMIN --remove-store "${_zuserstore}"

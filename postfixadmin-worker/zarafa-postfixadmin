@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# This is only a bootstrap script
+
+while [ : ]
+do
+    $(dirname $0)/worker
+    sleep 10s
+done
