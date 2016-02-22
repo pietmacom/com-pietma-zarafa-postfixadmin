@@ -8,6 +8,8 @@ INTRODUCTION
    - Security -> no root / sudo 
 
 
+INSTALLATION FROM SOURCE
+
 INSTALLATION FROM ARCHLINUX PACKAGE
 
  Add the repository to /etc/pacman.conf at the end of the file.
