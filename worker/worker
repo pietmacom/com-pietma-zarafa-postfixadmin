@@ -67,7 +67,7 @@ do
 
 		# locale part of the email me@you.de -> me	
 		_name=$(echo "${_address}" | sed "s/@.*//g")	
-		_password=$(< /dev/urandom tr -dc 0-9 | head -c16)$(< /dev/urandom tr -dc A-Za-z0-9 | head -c16)
+		_password=$(dd if=/dev/urandom count=1 bs=2048 2> /dev/null | base64 | tr "\n" "z" | head -c 16)
 		
 		#  CHECKS
 		case ${_laction} in
