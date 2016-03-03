@@ -1,4 +1,4 @@
--- IMPORT FROM ZARAFA TO ZARAFA-POSTFIXADMIN
+-- IMPORT FROM ZARAFA TO ZARAFAPOSTFIXADMIN
 
 -- Execute this script right in Mysql
 -- mysql -uroot < import-from-zarafa.sql
