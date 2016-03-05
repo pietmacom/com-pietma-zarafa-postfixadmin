@@ -52,7 +52,7 @@ DIFFERENCES TO WELL KNOWN POSTFIXADMIN
  - Mailbox passwords are not hidden
  - Mailbox passwords are only treated as start password and deleted when transfered to Zarafa
  - Mailbox passwords are only managed by Zarafas DB-Plugin
-
+ - Due to deleted mailbox password user logins are disabled
 
 USE CASES 
 
