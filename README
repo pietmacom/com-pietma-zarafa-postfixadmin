@@ -1,13 +1,24 @@
 INTRODUCTION
 
- This document wants to give an insight to zarafa-postfixadmin and the reason it was invented.
-	
-  - Laking linux, postfix skills
-  - No LDAP
-  - Small setups 
-   - Security -> no root / sudo 
-
-
+ This document wants to give an insight to zarafa-postfixadmin and the reason it
+ was invented.
+ 
+ Small office or home setups are not connected to LDAP, Active Directory or
+ other enterprise user management systems. For this purpose zarafa-server's
+ coming with an integrated command line user management plugin. Badly persons
+ who are responsible for mailbox administration don't alway have technical
+ skills or command line root access. This gap is filled perfectly by Postfix Admin.
+ 
+ Postfix Admin is a web based interface used to manage mailboxes, virtual
+ domains and aliases.
+ 
+ Zarafa-Postfixadmin extends its function so it can manage zarafa, too. Basically it
+ consists of two parts.
+ 
+  - Customization to the official customiziation interface
+  - Worker-Service that walks the Postfix Admin log and runs
+    the actions to zarafa-admin
+    
 INSTALLATION FROM SOURCE
 
 INSTALLATION FROM ARCHLINUX PACKAGE
