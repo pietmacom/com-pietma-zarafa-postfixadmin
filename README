@@ -83,25 +83,25 @@ USE CASES
 
      1) Create Mailbox - Given password
      2) Create Mailbox - Generated password (empty field)
-      - Create Zarafa account with email=username, email, full name, password, active state
-      - Replace Postfix mailbox password with 'updated'
+      - Create Zarafa account with username=email, email, full name, password, active state
+      - Remove mailbox password from Postfixadmin
     
      3) Create Mailbox - Existing Zarafa account (with same email)
-      - Update Zarafa account with full name, password, active state
+      - Update Zarafa accounts full name, password, active state
     
      4) Edit Mailbox - Name
      5) Edit Mailbox - Active state
-      - Update Zarafa account with full name, active state
+      - Update Zarafa accounts full name, active state
     
      6) Edit Mailbox - Empty Name 
       - As 4), but takes username from local part of email (me@test.de -> me)
      
      7) Edit Mailbox - Password
-      - Update Zarafa account with full name, password, active state
-      - Replace Postfix mailbox password with 'updated'
+      - Update Zarafa accounts full name, password, active state
+      - Remove mailbox password from Postfixadmin 
      
      8) Delete Mailbox
-      - Deletes Zarafa account userstore and account 
+      - Deletes Zarafa account and userstore 
        
        
  Alias Use Cases
@@ -110,7 +110,7 @@ USE CASES
       - Action is skipped (No change to Zarafa)
       
      2) Create Alias - To destination known in Zarafa
-      - Create inactive Zarafa account with alias=username, alias=email, username from local part of email (me@test.de -> me), random password
+      - Create inactive Zarafa account with username=alias, email=alias, full name is taken from local part of email (me@test.de -> me), random password
       - Add destination in sendas
     
      4) Edit Alias - Active state
