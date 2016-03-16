@@ -196,7 +196,7 @@ do
 			edit_user "${_zusername}" "${_username}" "${_password}" "${_name}" "${_active}"
 
 			# remove password from database (set marker for password reset)
-			$MYSQLEXEC "UPDATE mailbox SET password='' WHERE username='${_email}'";    	    
+			$MYSQLEXEC "UPDATE mailbox SET password='' WHERE username='${_username}'";    	    
 		;;
 		esac
 		;;	
