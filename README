@@ -22,7 +22,7 @@ INTRODUCTION
     
 INSTALLATION FROM SOURCE
 
- Sometimes shellscripts are say more than a thousand words.
+ Sometimes shellscripts say more than a thousand words.
  
     https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=zarafa-postfixadmin
 
@@ -34,7 +34,7 @@ INSTALLATION FROM ARCHLINUX PACKAGE
     SigLevel = Optional TrustAll
     Server = http://repository.pietma.com/nexus/content/repositories/archlinux/$arch/$repo
 
- Synchronize packages and download a fresh copy of the master package list from the servers
+ Synchronize packages and download a fresh copy of the master package list from the server
 
     sudo pacman -Sy
 
@@ -68,13 +68,13 @@ CONFIGURATION
 DIFFERENCES TO WELL KNOWN POSTFIXADMIN
 
  - Mailbox passwords are not hidden
- - Mailbox passwords are only treated as start password and deleted when transfered to Zarafa
+ - Mailbox passwords are only treated as start password and deleted after transfer to Zarafa
  - Mailbox passwords are only managed by Zarafas DB-Plugin
- - Due to deleted mailbox password user logins are disabled
+ - Due to deleted mailbox password user logins in postfixadmin are disabled
 
 USE CASES 
 
- This part should show the supported actions you can do in Zarafa-Postfixadmin and which change they cause in Zarafa. Actions causing the same change are grouped.
+ This part should show the supported actions you can take in Zarafa-Postfixadmin and which change they cause in Zarafa. Actions causing the same change are grouped together.
 
  Domain User Cases
 
