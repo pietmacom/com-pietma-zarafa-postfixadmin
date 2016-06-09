@@ -32,7 +32,7 @@ INSTALLATION FROM ARCHLINUX PACKAGE
     
     [pietma]
     SigLevel = Optional TrustAll
-    Server = http://repository.pietma.com/nexus/content/repositories/archlinux/$arch/$repo
+    Server = https://repository.pietma.com/nexus/content/repositories/archlinux/$arch/$repo
 
  Synchronize packages and download a fresh copy of the master package list from the server
 
