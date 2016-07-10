@@ -1,0 +1,26 @@
+#!/bin/sh -e
+
+MYSQL=$(which mysql)
+ZARAFAADMIN=$(which zarafa-admin)
+
+# SETINGS FROM ZARAFA
+_zsettings="/etc/zarafa/server.cfg"
+if [[ ! -e ${_zsettings} ]];
+then
+    echo "Zarafa is not set up."
+    exit                
+fi   
+
+_zdatabase_host=$(cat ${_zsettings} | grep -e "mysql_host" | sed "s/.*=\s*//g")
+_zdatabase_socket=$(cat ${_zsettings} | grep -e "mysql_socket" | sed "s/.*=\s*//g")
+_zdatabase_user=$(cat ${_zsettings} | grep -e "mysql_user" | sed "s/.*=\s*//g")
+_zdatabase_password=$(cat ${_zsettings} | grep -e "mysql_password" | sed "s/.*=\s*//g")
+_zdatabase_name=$(cat ${_zsettings} | grep -e "mysql_database" | sed "s/.*=\s*//g")
+
+if [[ ${_zdatabase_host} == localhost* && ${_zdatabase_socket} == /* ]];
+then
+    _zdestination="-S${_zdatabase_socket}"
+else
+    _zdestination="-h${_zdatabase_host}"
+fi
+ZMYSQLEXEC="$MYSQL ${_zdatabase_name} -u${_zdatabase_user} -p${_zdatabase_password} ${_zdestination} -s -N  -e"

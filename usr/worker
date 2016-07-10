@@ -1,0 +1,213 @@
+#!/bin/sh -e
+
+#
+# https://git.pietma.com/pietma/com-pietma-zarafa-postfixadmin
+#
+
+# include zarafa functions
+source $(dirname $0)/config-zarafa
+source $(dirname $0)/config-postfix
+source $(dirname $0)/functions-zarafa
+
+_lastlog="/var/lib/zarafa-postfixadmin/lastlog"
+
+# use only new log entries "
+if [[ ! -e ${_lastlog} ]];
+then
+    # _log=$($MYSQLEXEC "SELECT * FROM log WHERE ORDER BY timestamp ASC;")
+    $MYSQLEXEC "SELECT NOW();" > ${_lastlog}
+fi
+
+_logworked=$(cat ${_lastlog})
+_log=$($MYSQLEXEC "SELECT * FROM log WHERE timestamp > '${_logworked}' ORDER BY timestamp ASC;")
+
+if [[ -z ${_log} ]];
+then
+    #echo "Nothing to do on" $(date)
+    exit
+fi
+
+echo "${_log}" | while read p
+do
+    echo "Action ${p}"
+    
+    _ltimestamp=$(echo "$p" | cut -f1)
+    _laction=$(echo "$p" | cut -f4)
+    _ldata=$(echo "$p" | cut -f5)
+
+    _mailbox=$($MYSQLEXEC "SELECT username, password, name, local_part, active  FROM mailbox WHERE username='${_ldata}';")
+    _alias=$($MYSQLEXEC "SELECT address, goto, active FROM alias WHERE address='${_ldata}';")
+
+    # To complicated? Well... Going with the e-mailaddress enables you to change usernames as you wish! 
+    _zuser=$($ZMYSQLEXEC "SELECT objectid, value FROM objectproperty WHERE objectid=(SELECT objectid FROM objectproperty WHERE propname='emailaddress' AND value='${_ldata}') AND propname='loginname';")
+    _zuserid=$(echo "${_zuser}" | cut -f1)
+    _zusername=$(echo "${_zuser}" | cut -f2)
+    # "
+    
+    _zuserstore=$($ZMYSQLEXEC "SELECT HEX(guid) FROM stores WHERE user_name='${_zusername}';")	
+    #"    
+    
+    case ${_laction} in
+    *alias)
+		if [[ ! -z ${_mailbox} ]];
+		then
+			echo "Skipped automatic alias for mailbox"
+			echo "${_ltimestamp}" > ${_lastlog}
+			continue
+		fi
+
+		_address=$(echo "${_alias}" | cut -f1)
+		_goto=$(echo "${_alias}" | cut -f2)
+		_active=$(echo "${_alias}" | cut -f3)
+
+		_znewdelegate=$($ZMYSQLEXEC "SELECT objectid, value FROM objectproperty WHERE objectid=(SELECT objectid FROM objectproperty WHERE propname='emailaddress' AND value='${_goto}') AND propname='loginname';")
+		_znewdelegateid=$(echo "${_znewdelegate}" | cut -f1)
+		_znewdelegateusername=$(echo "${_znewdelegate}" | cut -f2)
+		#"
+
+		# locale part of the email me@you.de -> me	
+		_name=$(echo "${_address}" | sed "s/@.*//g")	
+		_password=$(dd if=/dev/urandom count=1 bs=2048 2> /dev/null | base64 | tr "\n" "z" | head -c 16)
+		
+		#  CHECKS
+		case ${_laction} in
+		create*)
+			if [[ ! -z ${_zuser} ]];
+			then
+				echo "Treating existing local alias as edit"
+				_laction="edit_alias"    
+			fi
+	
+			if [[ -z ${_znewdelegateid} ]];
+			then
+				echo "Skipping not existing local delegate"
+				echo "${_ltimestamp}" > ${_lastlog}
+				continue
+			fi
+
+			if [[ ${_active} == "0" ]];
+			then
+				echo "Skipping creation of inactive alias"
+				echo "${_ltimestamp}" > ${_lastlog}
+				continue
+			fi
+		;;
+		delete*)
+			if [[ -z ${_zuser} ]];
+			then
+				echo "Skipping unknown local alias"
+				echo "${_ltimestamp}" > ${_lastlog}
+				continue
+			fi
+		;;	
+		edit*)
+			if [[ -z ${_zuser} ]];
+			then
+				echo "Treating non existing local alias as create"
+				_laction="create_alias"
+			fi
+	
+			if [[ -z ${_znewdelegateid} ]];
+			then
+				echo "Treating non existing local delegate as delete_alias"	    
+				_laction="delete_alias"
+			fi
+	
+			if [[ ${_active} == "0" ]];
+			then
+				echo "Treating alias active=0 as delete_alias"
+				_laction="delete_alias"
+			fi
+		;;
+		esac
+
+		#  WORK
+		case ${_laction} in
+		create*)
+			create_user "${_address}" "${_password}" "${_name}" "0"
+		
+			if [[ ${_active} == "1" ]];
+			then
+				add_delegate "${_address}" "${_znewdelegateusername}"
+			fi
+		;;
+		delete*)
+			remove_all_delegates "${_zusername}"
+			delete_user "${_zusername}"
+		;;
+		edit*)
+			# TODO Allow to keep more delegates
+			#edit_user "${_zusername}" "${_address}" "${_password}" "${_name}" "0"
+   			remove_all_delegates "${_zusername}"
+		
+			if [[ ${_active} == "1" ]];
+			then
+				add_delegate "${_zusername}" "${_znewdelegateusername}"
+			fi
+		;;
+		esac	
+    ;;
+    *mailbox)
+		_username=$(echo "${_mailbox}" | cut -f1)
+		_password=$(echo "${_mailbox}" | cut -f2)
+		_name=$(echo "${_mailbox}" | cut -f3)
+		_local_part=$(echo "${_mailbox}" | cut -f4)
+		_active=$(echo "${_mailbox}" | cut -f5)
+
+		#  CHECKS
+		case ${_laction} in
+		create*)
+			if [[ ! -z ${_zuser} ]];
+			then
+				echo "Treating existing local mailbox as edit"
+				_laction="edit_mailbox"
+			fi
+		;;
+		delete*)
+			if [[ -z ${_zuser} ]];
+			then
+				echo "User with email ${_ldata} not found in Zarafa"
+				echo "${_ltimestamp}" > ${_lastlog}			
+				continue
+			fi
+		;;
+		edit*)
+			if [[ -z ${_zuser} ]];
+			then
+				echo "User with email ${_ldata} not found in Zarafa"
+				echo "${_ltimestamp}" > ${_lastlog}
+				continue
+			fi
+		;;
+		esac
+
+		#  WORK
+		case ${_laction} in
+		create*)
+			create_user "${_username}" "${_password}" "${_name}" "${_username}" "${_active}"
+   
+			# remove password from database (set marker for password reset)
+			$MYSQLEXEC "UPDATE mailbox SET password='' WHERE username='${_username}'";
+		;;
+		delete*)
+			delete_user "${_zusername}"
+		;;
+		edit*)
+			edit_user "${_zusername}" "${_username}" "${_password}" "${_name}" "${_active}"
+
+			# remove password from database (set marker for password reset)
+			$MYSQLEXEC "UPDATE mailbox SET password='' WHERE username='${_username}'";    	    
+		;;
+		esac
+		;;	
+	*)
+		echo "Skipped"
+    ;;
+    esac
+    
+    # spacer
+    echo " "
+    
+    # mark position as done
+    echo "${_ltimestamp}" > ${_lastlog}
+done

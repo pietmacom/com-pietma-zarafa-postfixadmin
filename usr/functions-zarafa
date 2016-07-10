@@ -1,0 +1,113 @@
+#!/bin/sh -e
+
+source $(dirname $0)/config-zarafa
+
+add_delegate() {
+	local _zusername=$1
+	local _znewdelegateusername=$2
+	
+	echo "Adding delegate ${_znewdelegateusername} for user ${_zusername}"
+	$ZARAFAADMIN -u "${_zusername}" --add-sendas "${_znewdelegateusername}"
+}
+
+remove_all_delegates() {
+	local _zusername=$1
+
+	echo "Removing all delegates"
+	local _zuserid=$($ZMYSQLEXEC "SELECT objectid FROM objectproperty WHERE value='${_zusername}' AND propname='loginname';")
+	local _zsendas=$($ZMYSQLEXEC "SELECT objectid FROM objectrelation WHERE parentobjectid='${_zuserid}' AND relationtype='6';")    
+
+	if [[ -z ${_zsendas} ]];
+	then
+		return 0;
+	fi
+	
+	echo "${_zsendas}" | while read _zdelegateid
+	do
+		local _zdelegateusername=$($ZMYSQLEXEC "SELECT value FROM objectproperty WHERE propname='loginname' AND objectid='${_zdelegateid}'")
+		if [[ -z ${_zsendas} ]];
+		then
+			continue
+		fi
+		
+		echo "Removing delegate ${_zdelegateusername} from user ${_zusername}"
+		$ZARAFAADMIN -u "${_zusername}" --del-sendas "${_zdelegateusername}"
+	done
+}
+
+create_user() {
+	local _email=$1
+	local _password=$2
+	local _name=$3
+	local _active=$4
+
+	echo "Creating user ${_email}"
+        # zarafa defines inactive users
+	if [[ ${_active} == "0" ]];
+	then
+		local _inactive="1"
+	else
+		local _inactive="0"
+	fi
+
+	# zarafa doesn't allow empty full names
+	if [[ -z ${_name} ]];
+	then
+		local _name=$(echo "${_email}" | sed "s/@.*//g")
+	fi
+
+	$ZARAFAADMIN -c "${_email}" -p "${_password}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
+	$ZARAFAADMIN --create-store "${_email}"
+}
+
+edit_user() {
+	local _zusername=$1
+	local _email=$2
+	local _password=$3
+	local _name=$4
+	local _active=$5
+
+	echo "Updating user ${_zusername} with email ${_email}"	    
+	# zarafa defines inactive users
+	if [[ ${_active} == "0" ]];
+	then
+		local _inactive="1"
+	else
+		local _inactive="0"
+	fi
+
+	# zarafa doesn't allow empty full names
+	if [[ -z ${_name} ]];
+	then
+		local _name=$(echo "${_email}" | sed "s/@.*//g")
+	fi
+
+	local _zuserstore=$($ZMYSQLEXEC "SELECT HEX(guid) FROM stores WHERE user_name='${_zusername}';")
+	if [[ ${_password} == "" ]];
+	then
+		echo "Password unchanged"	
+		$ZARAFAADMIN -u "${_zusername}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
+	else
+		echo "Password changed"
+		$ZARAFAADMIN -u "${_zusername}" -p "${_password}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
+	fi            
+                
+	# check for existing store              
+	$ZARAFAADMIN --details "${_zusername}" > /dev/null
+	if [[ $? -ne 0 ]];
+	then
+		echo "Reattache store to user ${_zusername}"
+		$ZARAFAADMIN -u "${_zusername}" --hook-store "${_zuserstore}"
+	fi
+}
+
+delete_user() {
+	local _zusername=$1
+
+	echo "Deleting user ${_zusername}"
+	local _zuserstore=$($ZMYSQLEXEC "SELECT HEX(guid) FROM stores WHERE user_name='${_zusername}';")
+
+	$ZARAFAADMIN --unhook-store "${_zusername}"
+	$ZARAFAADMIN --remove-store "${_zuserstore}"
+	$ZARAFAADMIN -d "${_zusername}"
+}
