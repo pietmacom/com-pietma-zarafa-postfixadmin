@@ -40,7 +40,7 @@ INSTALLATION FROM ARCHLINUX PACKAGE
 
  Install the packages
     
-    sudo pacman -Sy pietma/zarafa-postfixadmin pietma/zarafa-postfixadmin-worker
+    sudo pacman -Sy zarafa-postfixadmin
 
 CONFIGURATION
 
@@ -57,8 +57,8 @@ CONFIGURATION
     sudo /usr/share/doc/zarafa-postfixadmin/install
     sudo systemctl restart nginx
     sudo systemctl restart php-fpm
-    sudo systemctl enable zarafa-postfixadmin-worker.service
-    sudo systemctl start zarafa-postfixadmin-worker.service
+    sudo systemctl enable zarafa-postfixadmin.service
+    sudo systemctl start zarafa-postfixadmin.service
  
  Visit and create a superadmin account
  
