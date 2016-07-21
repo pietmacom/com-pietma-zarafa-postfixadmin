@@ -6,6 +6,11 @@ _pkgconfig="/etc/webapps/zarafa-postfixadmin/config.local.php"
 _databasename="zarafapostfixadmin"
 _databaseuser="zarafapostfixadmin"
 
+function setup_password() {
+    local _salt=$(date +%s)"*127.0.0.1*"$(shuf -i 0-60000 -n 1)
+    local _salt=$(echo -n "${_salt}" | md5sum | cut -f1 -d' ')
+    echo -n "${_salt}:"$(echo -n "${_salt}:$1" | sha1sum | cut -f1 -d' ')
+}
 
 read -s -p "MySQL Root Password:" _mysqlpassword
 
@@ -39,7 +44,7 @@ then
 
     _setup_password=$(< /dev/urandom tr -dc 0-9 | head -c16)$(< /dev/urandom tr -dc A-Za-z0-9 | head -c16)
     echo "### Setting ${_pkgname} setup password to" ${_setup_password}
-    _setup_password_enc=$($(dirname $0)/setup-password ${_setup_password})
+    _setup_password_enc=$(setup_password "${_setup_password}")
     
 
     sed -i -e "s/\(configured']\s*=\s*\)\(.*\)\(;$\)/\1true\3/" ${_pkgconfig}
