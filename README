@@ -70,13 +70,13 @@ DIFFERENCES TO WELL KNOWN POSTFIXADMIN
  - Mailbox passwords are not hidden
  - Mailbox passwords are only treated as start password and deleted after transfer to Zarafa
  - Mailbox passwords are only managed by Zarafas DB-Plugin
- - Due to deleted mailbox password user logins in postfixadmin are disabled
+ - Due to transfered and afterwards deleted mailbox password, user login in postfixadmin is disabled
 
 USE CASES 
 
  This part should show the supported actions you can take in Zarafa-Postfixadmin and which change they cause in Zarafa. Actions causing the same change are grouped together.
 
- Domain User Cases
+ Domain Use Cases
 
      1) Create Domain
      2) Edit Domain
