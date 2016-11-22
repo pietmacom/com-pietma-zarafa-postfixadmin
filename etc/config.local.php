@@ -8,7 +8,7 @@
 
 $CONF['generate_password'] = 'YES';
 $CONF['sendmail'] = 'NO';
-$CONF['fetchmail'] = 'NO';
+$CONF['fetchmail'] = 'YES';
 
 function domain_struct_admin_modify($struct) {
     $struct['default_aliases']['display_in_form'] = 0;
