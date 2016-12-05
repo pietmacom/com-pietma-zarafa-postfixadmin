@@ -1,0 +1,11 @@
+[Unit]
+Description=Fetchmail
+After=network.target mysqld.service
+
+[Service]
+ExecStart=/bin/sh -c "/usr/bin/perl /usr/share/zarafa-postfixadmin/fetchmail.pl"
+User=fetchmail
+Group=nobody
+
+[Install]
+WantedBy=multi-user.target
