@@ -1,2 +1,0 @@
-# dont flush mails with response 550/spam because this might guides to dataloss.
-antispam -1

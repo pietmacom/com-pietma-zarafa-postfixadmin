@@ -129,7 +129,9 @@ TXT
   print $file_handler $text;
   close $file_handler;
 
-  $ret=`/usr/bin/fetchmail -v -f $filename -i $run_dir/fetchmail.pid`;
+  $ret=`/usr/bin/fetchmail -Z "-1" -f $filename -i $run_dir/fetchmail.pid`;
+# uncomment for verbose output and run "journalctl -u fetchmail-postfixadmin -f"
+#  $ret=`/usr/bin/fetchmail -v -Z "-1" -f $filename -i $run_dir/fetchmail.pid`;
   unlink $filename;
 
   $sql="UPDATE fetchmail SET returned_text=".$dbh->quote($ret).", date=now() WHERE id=".$id;
