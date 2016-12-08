@@ -29,8 +29,8 @@ our $db_password="CHANGE_ME!";
 # instead of changing this script, you can put your settings to /etc/mail/postfixadmin/fetchmail.conf
 # just use perl syntax there to fill the variables listed above (without the "our" keyword). Example:
 # $db_username = 'mail';
-if (-f "/etc/mail/postfixadmin/fetchmail.conf") {
-	require "/etc/mail/postfixadmin/fetchmail.conf";
+if (-f "/etc/webapps/zarafa-postfixadmin/fetchmail.conf") {
+	require "/etc/webapps/zarafa-postfixadmin/fetchmail.conf";
 }
 
 
