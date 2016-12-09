@@ -1,3 +1,0 @@
-chmown -R root:root .
-chmod 700 .
-chmod 600 *
