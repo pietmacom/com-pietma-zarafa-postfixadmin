@@ -1,5 +1,5 @@
-user = zarafapostfixadmin
+user = 
 password = 
 hosts = unix:/run/mysqld/mysqld.sock
-dbname = zarafapostfixadmin
+dbname = 
 query = SELECT goto FROM alias WHERE address = '%s' AND active = '1'

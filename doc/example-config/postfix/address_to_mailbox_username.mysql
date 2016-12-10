@@ -1,5 +1,5 @@
-user = zarafapostfixadmin
+user = 
 password = 
 hosts = unix:/run/mysqld/mysqld.sock
-dbname = zarafapostfixadmin
+dbname = 
 query = SELECT username FROM mailbox WHERE username = '%s' AND active = '1'

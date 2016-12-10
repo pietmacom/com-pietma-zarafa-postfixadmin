@@ -1,5 +1,5 @@
-user = zarafapostfixadmin
+user = 
 password = 
 hosts = unix:/run/mysqld/mysqld.sock
-dbname = zarafapostfixadmin
+dbname = 
 query = SELECT CONCAT('@', target_domain) FROM alias_domain WHERE alias_domain=SUBSTRING_INDEX ('%s','@', -1) AND active = '1'
