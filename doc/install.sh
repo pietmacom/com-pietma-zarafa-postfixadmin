@@ -21,7 +21,7 @@ else
     mysqlexec="mysql -uroot -p${_mysqlpassword} -s -N -e"
 fi
 
-if [[ -z $($mysqlexec "show databases like '${_databasename}%';") ]];
+if [[ -z $($mysqlexec "show databases like '${_databasename}';") ]];
 then
     echo "[....] Create Zarafa-Postfixadmin database"
     _databasepassword=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c16)
