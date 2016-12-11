@@ -43,7 +43,12 @@ then
     sed -i -e "s/\(database_password']\s*=\s*\)\(.*\)\(;$\)/\1'${_databasepassword}'\3/" ${_config}
     sed -i -e "s/\(database_name']\s*=\s*\)\(.*\)\(;$\)/\1'${_databasename}'\3/" ${_config}
 
-    # zarafa postfixadmin postfix scripts
+    # fetchmail
+    sed -i -e "s/\(db_username\s*=\s*\)\(.*\)\(;$\)/\1'${_databaseuser}'\3/" ${_etc}/fetchmail.conf
+    sed -i -e "s/\(db_password\s*=\s*\)\(.*\)\(;$\)/\1'${_databasepassword}'\3/" ${_etc}/fetchmail.conf    
+    sed -i -e "s/\(db_name\s*=\s*\)\(.*\)\(;$\)/\1'${_databasename}'\3/" ${_etc}/fetchmail.conf    
+
+    # postfix scripts
     sed -i -e "s/\(user\s*=\s*\)\(.*\)/\1${_databaseuser}/" ${_etc}/postfix/*.mysql
     sed -i -e "s/\(password\s*=\s*\)\(.*\)/\1${_databasepassword}/" ${_etc}/postfix/*.mysql
     sed -i -e "s/\(dbname\s*=\s*\)\(.*\)/\1${_databasename}/" ${_etc}/postfix/*.mysql
