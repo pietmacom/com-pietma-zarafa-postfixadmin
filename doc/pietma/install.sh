@@ -1,5 +1,6 @@
 #!/bin/bash -e
 
+_basedir="$(dirname $0)"
 _etc="/etc/webapps/zarafa-postfixadmin"
 _config="${_etc}/config.local.php"
 _databasename="zarafapostfixadmin"
@@ -18,7 +19,7 @@ echo
 if [[ "${_response,,}" = "y" ]];
 then
     echo "[....] Copy and override POSTFIX (extended) settings"
-    cp -rf configs/postfix /etc
+    cp -rf ${_basedir}/configs/postfix /etc
     echo "[DONE] Copy and override POSTFIX (extended) settings"
 fi
 
