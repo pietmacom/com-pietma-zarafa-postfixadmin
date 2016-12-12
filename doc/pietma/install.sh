@@ -17,9 +17,9 @@ echo
 echo
 if [[ "${_response,,}" = "y" ]];
 then
-    echo "[....] Copy and override POSTFIX (extended) setting"
+    echo "[....] Copy and override POSTFIX (extended) settings"
     cp -rf configs/postfix /etc
-    echo "[DONE] Copy and override POSTFIX (extended) settin"
+    echo "[DONE] Copy and override POSTFIX (extended) settings"
 fi
 
 
@@ -81,5 +81,10 @@ then
     echo "2.) Create admin account with super password."
     echo
     echo "   Setup password: ${_setup_password}"
+    echo
+    echo "3.) Enable and start service."
+    echo
+    echo "   $ systemctl enable zarafa-postfixadmin"
+    echo "   $ systemctl start zarafa-postfixadmin"
     echo
 fi
