@@ -86,8 +86,8 @@ then
     echo "3.) Enable and start services."
     echo
     echo "   $ systemctl enable zarafa-postfixadmin"
-    echo "   $ systemctl enable fetchmail-postfixadmin"
+    echo "   $ systemctl enable fetchmail-postfixadmin.timer"
     echo "   $ systemctl start zarafa-postfixadmin"
-    echo "   $ systemctl start fetchmail-postfixadmin"    
+    echo "   $ systemctl start fetchmail-postfixadmin.timer"    
     echo
 fi
