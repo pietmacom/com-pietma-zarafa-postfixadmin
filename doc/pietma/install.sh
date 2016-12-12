@@ -24,7 +24,7 @@ fi
 
 
 echo
-read -s -p "MySQL Root Password:" _mysqlpassword
+read -s -p ":: Please enter MySQL Root Password (or empty)" _mysqlpassword
 echo
 echo
 if [[ -z ${_mysqlpassword} ]];
