@@ -1,0 +1,6 @@
+user = 
+password = 
+dbname = 
+hosts = unix:/run/mysqld/mysqld.sock
+query = SELECT dst_address FROM fetchmail WHERE mailbox = '%s' AND dst_address IS NOT NULL AND dst_address <> '' AND active = '1' ORDER BY src_user, dst_server;
+

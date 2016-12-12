@@ -1414,6 +1414,7 @@ function upgrade_1795_mysql() {
 
 function upgrade_1796() {
     _db_add_field('fetchmail', 'dst_server',   "VARCHAR(255) {LATIN1} DEFAULT ''", 'src_folder');
+    _db_add_field('fetchmail', 'dst_address',   "VARCHAR(255) {LATIN1} DEFAULT ''", 'dst_server');
 }
 
 

@@ -40,6 +40,7 @@ $CONF['mailbox_struct_hook'] = 'mailbox_struct_admin_modify';
 
 function fetchmail_struct_admin_modify($struct) {
     $struct['dst_server']    = pacol(   1,          1,      1,      'text', 'pFetchmail_field_dst_server'   , 'pFetchmail_desc_dst_server'      );
+    $struct['dst_address']    = pacol(   1,          1,      1,      'text', 'pFetchmail_field_dst_address'   , 'pFetchmail_desc_dst_address'      );    
     return $struct;
 }
 $CONF['fetchmail_struct_hook'] = 'fetchmail_struct_admin_modify';
@@ -49,10 +50,15 @@ function language_hook($PALANG, $language) {
     switch ($language) {
         default:
             $PALANG['pCreate_mailbox_password_text'] = 'Initial password (transferred / generated when empty). Please change in Zarafa!';
-            $PALANG['pFetchmail_field_dst_server'] = 'Outbound Server';
-            $PALANG['pFetchmail_desc_dst_server'] = 'SMTP Server';
+
             $PALANG['pFetchmail_field_src_server'] = 'Inbound Server';
             $PALANG['pFetchmail_desc_src_server'] = 'POP/IMAP Server';
+
+            $PALANG['pFetchmail_field_dst_server'] = 'Outbound Server';
+            $PALANG['pFetchmail_desc_dst_server'] = 'SMTP Server';
+
+            $PALANG['pFetchmail_field_dst_address'] = 'Outbound Address';
+            $PALANG['pFetchmail_desc_dst_address'] = 'E-Mail Address';
     }
 
     return $PALANG;

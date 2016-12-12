@@ -1,5 +1,5 @@
 user = 
 password = 
-hosts = unix:/run/mysqld/mysqld.sock
 dbname = 
+hosts = unix:/run/mysqld/mysqld.sock
 query = SELECT goto FROM alias WHERE address = '%s' AND active = '1'

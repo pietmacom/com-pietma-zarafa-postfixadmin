@@ -11,8 +11,22 @@ function setup_password() {
     echo -n "${_salt}:"$(echo -n "${_salt}:$1" | sha1sum | cut -f1 -d' ')
 }
 
-read -s -p "MySQL Root Password:" _mysqlpassword
+echo
+read -p ":: Copy and override POSTFIX (extended) settings? [Y/n]" _response
+echo
+echo
+if [[ "${_response,,}" = "y" ]];
+then
+    echo "[....] Copy and override POSTFIX (extended) setting"
+    cp -rf configs/postfix /etc
+    echo "[DONE] Copy and override POSTFIX (extended) settin"
+fi
 
+
+echo
+read -s -p "MySQL Root Password:" _mysqlpassword
+echo
+echo
 if [[ -z ${_mysqlpassword} ]];
 then
     echo "Continue without password"

@@ -1,3 +1,5 @@
-chmown -R root:root .
-chmod 700 .
-chmod 600 *
+All of this files contain database credentials.
+Protect them right!
+
+chown -R postfix:postfix .
+chmod -R 600 *
