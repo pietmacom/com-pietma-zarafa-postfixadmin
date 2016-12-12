@@ -82,9 +82,11 @@ then
     echo
     echo "   Setup password: ${_setup_password}"
     echo
-    echo "3.) Enable and start service."
+    echo "3.) Enable and start services."
     echo
     echo "   $ systemctl enable zarafa-postfixadmin"
+    echo "   $ systemctl enable fetchmail-postfixadmin"
     echo "   $ systemctl start zarafa-postfixadmin"
+    echo "   $ systemctl start fetchmail-postfixadmin"    
     echo
 fi
