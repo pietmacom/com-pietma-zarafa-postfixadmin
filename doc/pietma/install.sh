@@ -69,6 +69,38 @@ then
     sed -i -e "s/\(dbname\s*=\s*\)\(.*\)/\1${_databasename}/" ${_etc}/postfix/*.mysql
     echo "[DONE] Create Zarafa-Postfixadmin database"
 
+    # setup.php => create tables
+    echo "[....] Install database tables (this will take a while ~1min)"
+    if ${_setup_output}=$(lynx -image_links -nolist -nonumbers -hiddenlinks=ignore --dump https://localhost/zarafa-postfixadmin/setup.php) ;
+	_setup_done="1"
+	echo "${_setup_output}"
+	echo "[DONE] Install database tables"
+	
+	# start services
+	echo
+	read -p ":: Enable and start services ZARAFA-POSTFIXADMIN, FETCHMAIL-POSTFIXADMIN, POSTFIX [Y/n] " _response
+	echo
+	if [[ "${_response,,}" = "y" ]];
+	then
+	    echo "[....] Enable and start services"
+	    systemctl enable zarafa-postfixadmin
+	    systemctl enable fetchmail-postfixadmin.timer
+	    systemctl enable postfix
+
+	    systemctl start zarafa-postfixadmin
+	    systemctl start fetchmail-postfixadmin.timer
+	    systemctl start postfix
+
+	    postfix reload
+	    echo "[DONE] Enable and start services"
+	else
+	    echo "[SKIP] Enable and start services"
+	fi
+    else
+	_setup_done="0"
+	echo "[SKIP] Install database tables - Could not open https://localhost/zarafa-postfixadmin/setup.php"
+    fi
+
     # super password
     _setup_password=$(< /dev/urandom tr -dc 0-9 | head -c16)$(< /dev/urandom tr -dc A-Za-z0-9 | head -c16)
     _setup_password_enc=$(setup_password "${_setup_password}")
@@ -83,15 +115,20 @@ then
     echo
     echo "   Setup password: ${_setup_password}"
     echo
-    echo "3.) Enable and start services."
-    echo
-    echo "   $ systemctl enable zarafa-postfixadmin"
-    echo "   $ systemctl start zarafa-postfixadmin"
-    echo
-    echo "   $ systemctl enable fetchmail-postfixadmin.timer"
-    echo "   $ systemctl start fetchmail-postfixadmin.timer"
-    echo
-    echo "   $ systemctl enable postfix"
-    echo "   $ systemctl restart postfix"
-    echo
+    if [[ "${_setup_done}" == "0" ]];
+    then
+	echo "3.) Enable, start services and reload postfix configs."
+	echo
+	echo "   $ systemctl enable zarafa-postfixadmin"
+	echo "   $ systemctl start zarafa-postfixadmin"
+	echo
+	echo "   $ systemctl enable fetchmail-postfixadmin.timer"
+	echo "   $ systemctl start fetchmail-postfixadmin.timer"
+	echo
+	echo "   $ systemctl enable postfix"
+	echo "   $ systemctl start postfix"
+	echo
+	echo "   $ postfix reload"
+	echo
+    fi
 fi
