@@ -31,10 +31,12 @@ echo
 if [[ -z ${_mysqlpassword} ]];
 then
     echo "Continue without password"
-    mysqlexec="mysql -uroot -s -N -e"
+    mysql="mysql -uroot"
 else
-    mysqlexec="mysql -uroot -p${_mysqlpassword} -s -N -e"
+    mysql="mysql -uroot -p${_mysqlpassword}"
 fi
+mysqlexec="${mysql} -s -N -e"
+
 
 if [[ -z $($mysqlexec "show databases like '${_databasename}';") ]];
 then
@@ -95,6 +97,19 @@ then
 	    echo "[DONE] Enable and start services"
 	else
 	    echo "[SKIP] Enable and start services"
+	fi
+
+	# import zarafa users
+	echo
+	read -p ":: Import Zarafa users [Y/n] " _response
+	echo
+	if [[ "${_response,,}" = "y" ]];
+	then
+	    echo "[....] Import Zarafa users"
+	    $mysql < ${_basedir}/import-from-zarafa.sql
+	    echo "[DONE] Import Zarafa users"
+	else
+	    echo "[SKIP] Import Zarafa users"
 	fi
     else
 	_setup_done="0"
