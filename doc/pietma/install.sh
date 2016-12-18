@@ -146,4 +146,10 @@ then
 	echo "   $ postfix reload"
 	echo
     fi
+    
+    echo "Read More"
+    echo
+    echo "   https://wiki.archlinux.org/index.php/MySQL"
+    echo "   https://pietma.com/install-run-and-access-zarafa-postfix-admin/"
+    echo
 fi
