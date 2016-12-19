@@ -126,7 +126,7 @@ then
     echo
     echo "   https://HOSTNAME/zarafa-postfixadmin/setup.php"
     echo 
-    echo "2.) Create admin account with super password."
+    echo "2.) Create admin account with super password and write it down."
     echo
     echo "   Setup password: ${_setup_password}"
     echo
