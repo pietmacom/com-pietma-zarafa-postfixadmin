@@ -73,7 +73,8 @@ then
 
     # setup.php => create tables
     echo "[....] Install database tables (this will take a while ~1min)"
-    if ${_setup_output}=$(lynx -image_links -nolist -nonumbers -hiddenlinks=ignore --dump https://localhost/zarafa-postfixadmin/setup.php) ;
+    if _setup_output=$(lynx -image_links -nolist -nonumbers -hiddenlinks=ignore --dump https://localhost/zarafa-postfixadmin/setup.php) ;
+    then
 	_setup_done="1"
 	echo "${_setup_output}"
 	echo "[DONE] Install database tables"
@@ -152,4 +153,6 @@ then
     echo "   https://wiki.archlinux.org/index.php/MySQL"
     echo "   https://pietma.com/install-run-and-access-zarafa-postfix-admin/"
     echo
+else
+    echo "[SKIP] Install database  - Database found"
 fi
