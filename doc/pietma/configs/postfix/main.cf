@@ -108,10 +108,12 @@ smtp_sender_dependent_authentication = yes
 sender_canonical_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_mailbox_to_dstaddress.mysql
 
 sender_dependent_relayhost_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_mailbox_to_dstserver.mysql,
-    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_dstaddress_to_dstserver.mysql
-    
+    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_dstaddress_to_dstserver.mysql,
+    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/domain_at-domain_to_dstserver.mysql
+
 smtp_sasl_password_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_mailbox_to_credentials.mysql,
-    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_dstaddress_to_credentials.mysql
+    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_dstaddress_to_credentials.mysql,
+    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/domain_at-domain_to_credentials.mysql
 
 
 

@@ -1,0 +1,6 @@
+user = 
+password = 
+dbname = 
+hosts = unix:/run/mysqld/mysqld.sock
+query = SELECT dst_server FROM domain WHERE domain = SUBSTRING_INDEX ('%s','@',-1) AND dst_server IS NOT NULL AND dst_server <> '' AND active = '1' ORDER BY domain;
+
