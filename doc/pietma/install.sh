@@ -46,6 +46,7 @@ if [[ "${_response,,}" = "y" ]];
 then
     echo "[....] Copy and override POSTFIX (extended) settings"
     cp -rf ${_basedir}/configs/postfix /etc
+    cp -rf /usr/share/doc/zarafa-postfixadmin/example-config/postfix ${_etc}
     echo "[DONE] Copy and override POSTFIX (extended) settings"
 fi
 
@@ -166,6 +167,5 @@ else
     echo "[SKIP] Install database  - Database found"
 
     source /usr/share/zarafa-postfixadmin/config-postfix
-    credentials "${_etc}" "${_database_user}" "${_database_password}" "${_database_name}" 
-    postfix reload   
+    credentials "${_etc}" "${_database_user}" "${_database_password}" "${_database_name}"    
 fi
