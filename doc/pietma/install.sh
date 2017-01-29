@@ -46,7 +46,7 @@ if [[ "${_response,,}" = "y" ]];
 then
     echo "[....] Copy and override POSTFIX (extended) settings"
     cp -rf ${_basedir}/configs/postfix /etc
-    cp -rf /usr/share/doc/zarafa-postfixadmin/example-config/postfix ${_etc}
+    cp -rf ${_basedir}/../example-config/postfix ${_etc}
     echo "[DONE] Copy and override POSTFIX (extended) settings"
 fi
 
