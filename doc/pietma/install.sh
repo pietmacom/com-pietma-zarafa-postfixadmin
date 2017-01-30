@@ -6,9 +6,9 @@ _databasename="zarafapostfixadmin"
 _databaseuser="zarafapostfixadmin"
 
 function setup_password() {
-    local _salt=$(date +%s)"*127.0.0.1*"$(shuf -i 0-60000 -n 1)
-    local _salt=$(echo -n "${_salt}" | md5sum | cut -f1 -d' ')
-    echo -n "${_salt}:"$(echo -n "${_salt}:$1" | sha1sum | cut -f1 -d' ')
+	local _salt=$(date +%s)"*127.0.0.1*"$(shuf -i 0-60000 -n 1)
+	local _salt=$(echo -n "${_salt}" | md5sum | cut -f1 -d' ')
+	echo -n "${_salt}:"$(echo -n "${_salt}:$1" | sha1sum | cut -f1 -d' ')
 }
 
 function credentials() {
@@ -17,25 +17,25 @@ function credentials() {
 	local _databasepassword="$3"
 	local _databasename="$4"
 
-    echo "[....] Set credentials"
-    # zarafa postfixadmin config
-    sed -i -e "s/\(configured']\s*=\s*\)\(.*\)\(;$\)/\1true\3/" ${_etc}/config.local.php
-    sed -i -e "s/\(database_type']\s*=\s*\)\(.*\)\(;$\)/\1'mysql'\3/" ${_etc}/config.local.php
-    sed -i -e "s/\(database_host']\s*=\s*\)\(.*\)\(;$\)/\1'localhost:\/run\/mysqld\/mysqld.sock'\3/" ${_etc}/config.local.php
-    sed -i -e "s/\(database_user']\s*=\s*\)\(.*\)\(;$\)/\1'${_databaseuser}'\3/" ${_etc}/config.local.php
-    sed -i -e "s/\(database_password']\s*=\s*\)\(.*\)\(;$\)/\1'${_databasepassword}'\3/" ${_etc}/config.local.php
-    sed -i -e "s/\(database_name']\s*=\s*\)\(.*\)\(;$\)/\1'${_databasename}'\3/" ${_etc}/config.local.php
+	echo "[....] Set credentials"	
+	# zarafa postfixadmin config
+	sed -i -e "s/\(configured']\s*=\s*\)\(.*\)\(;$\)/\1true\3/" ${_etc}/config.local.php
+	sed -i -e "s/\(database_type']\s*=\s*\)\(.*\)\(;$\)/\1'mysql'\3/" ${_etc}/config.local.php
+	sed -i -e "s/\(database_host']\s*=\s*\)\(.*\)\(;$\)/\1'localhost:\/run\/mysqld\/mysqld.sock'\3/" ${_etc}/config.local.php
+	sed -i -e "s/\(database_user']\s*=\s*\)\(.*\)\(;$\)/\1'${_databaseuser}'\3/" ${_etc}/config.local.php
+	sed -i -e "s/\(database_password']\s*=\s*\)\(.*\)\(;$\)/\1'${_databasepassword}'\3/" ${_etc}/config.local.php
+	sed -i -e "s/\(database_name']\s*=\s*\)\(.*\)\(;$\)/\1'${_databasename}'\3/" ${_etc}/config.local.php
 
-    # fetchmail
-    sed -i -e "s/\(db_username\s*=\s*\)\(.*\)\(;$\)/\1'${_databaseuser}'\3/" ${_etc}/fetchmail.conf
-    sed -i -e "s/\(db_password\s*=\s*\)\(.*\)\(;$\)/\1'${_databasepassword}'\3/" ${_etc}/fetchmail.conf    
-    sed -i -e "s/\(db_name\s*=\s*\)\(.*\)\(;$\)/\1'${_databasename}'\3/" ${_etc}/fetchmail.conf    
+	# fetchmail
+	sed -i -e "s/\(db_username\s*=\s*\)\(.*\)\(;$\)/\1'${_databaseuser}'\3/" ${_etc}/fetchmail.conf
+	sed -i -e "s/\(db_password\s*=\s*\)\(.*\)\(;$\)/\1'${_databasepassword}'\3/" ${_etc}/fetchmail.conf    
+	sed -i -e "s/\(db_name\s*=\s*\)\(.*\)\(;$\)/\1'${_databasename}'\3/" ${_etc}/fetchmail.conf    
 
-    # postfix scripts
-    sed -i -e "s/\(user\s*=\s*\)\(.*\)/\1${_databaseuser}/" ${_etc}/postfix/*.mysql
-    sed -i -e "s/\(password\s*=\s*\)\(.*\)/\1${_databasepassword}/" ${_etc}/postfix/*.mysql
-    sed -i -e "s/\(dbname\s*=\s*\)\(.*\)/\1${_databasename}/" ${_etc}/postfix/*.mysql
-    echo "[DONE] Set credentials"
+	# postfix scripts
+	sed -i -e "s/\(user\s*=\s*\)\(.*\)/\1${_databaseuser}/" ${_etc}/postfix/*.mysql
+	sed -i -e "s/\(password\s*=\s*\)\(.*\)/\1${_databasepassword}/" ${_etc}/postfix/*.mysql
+	sed -i -e "s/\(dbname\s*=\s*\)\(.*\)/\1${_databasename}/" ${_etc}/postfix/*.mysql
+	echo "[DONE] Set credentials"
 }
 
 echo
@@ -46,10 +46,8 @@ if [[ "${_response,,}" = "y" ]];
 then
     echo "[....] Copy and override POSTFIX (extended) settings"
     cp -rf ${_basedir}/configs/postfix /etc
-    cp -rf ${_basedir}/../example-config/postfix ${_etc}
     echo "[DONE] Copy and override POSTFIX (extended) settings"
 fi
-
 
 echo
 read -s -p ":: Please enter MySQL Root Password (or empty)" _mysqlpassword
