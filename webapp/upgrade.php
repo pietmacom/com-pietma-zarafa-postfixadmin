@@ -1418,6 +1418,12 @@ function upgrade_1796() {
 }
 
 
+function upgrade_1797() {
+    _db_add_field('domain', 'dst_server',   "VARCHAR(255) {LATIN1} DEFAULT ''", 'backupmx');
+    _db_add_field('domain', 'dst_user',   "VARCHAR(255) {LATIN1} DEFAULT ''", 'dst_server');
+    _db_add_field('domain', 'dst_password',   "VARCHAR(255) {LATIN1} DEFAULT ''", 'dst_user');
+}
+
 # TODO MySQL:
 # - various varchar fields do not have a default value
 #   https://sourceforge.net/projects/postfixadmin/forums/forum/676076/topic/3419725
