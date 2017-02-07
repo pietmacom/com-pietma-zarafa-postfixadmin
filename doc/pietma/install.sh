@@ -155,15 +155,21 @@ then
 		echo "   $ postfix reload"
 		echo
     fi
-    
-    echo "Read More"
-    echo
-    echo "   https://wiki.archlinux.org/index.php/MySQL"
-    echo "   https://pietma.com/install-run-and-access-zarafa-postfix-admin/"
-    echo
 else
     echo "[SKIP] Install database  - Database found"
 
     source /usr/share/zarafa-postfixadmin/config-postfix
     credentials "${_etc}" "${_database_user}" "${_database_password}" "${_database_name}"    
+    
+    echo
+    echo "1.) Please open the setup page. The database is updated during opening."
+    echo
+    echo "   https://HOSTNAME/zarafa-postfixadmin/setup.php"
+    echo 
 fi
+
+echo "Read More"
+echo
+echo "   https://wiki.archlinux.org/index.php/MySQL"
+echo "   https://pietma.com/install-run-and-access-zarafa-postfix-admin/"
+echo
