@@ -1424,6 +1424,11 @@ function upgrade_1797() {
     _db_add_field('domain', 'dst_password',   "VARCHAR(255) {LATIN1} DEFAULT ''", 'dst_user');
 }
 
+function upgrade_1798() {
+    _db_add_field('domain', 'dkim_selector',   "VARCHAR(255) {LATIN1} DEFAULT ''", 'dst_password');
+    _db_add_field('domain', 'dkim_key',   "TEXT {LATIN1} DEFAULT ''", 'dkim_selector');
+}
+
 # TODO MySQL:
 # - various varchar fields do not have a default value
 #   https://sourceforge.net/projects/postfixadmin/forums/forum/676076/topic/3419725
