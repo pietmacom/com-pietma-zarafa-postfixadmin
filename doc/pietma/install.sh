@@ -73,7 +73,7 @@ then
     else
 		$mysqlexec "SET PASSWORD FOR '${_databaseuser}'@'localhost' = PASSWORD('${_databasepassword}');"
     fi
-    $mysqlexec "CREATE DATABASE ${_databasename};"
+    $mysqlexec "CREATE DATABASE ${_databasename} CHARACTER SET latin1;"
     $mysqlexec "GRANT ALL PRIVILEGES ON ${_databasename} . * TO '${_databaseuser}'@'localhost';"
     echo "[DONE] Create Zarafa-Postfixadmin database"
     
