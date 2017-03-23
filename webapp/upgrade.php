@@ -300,6 +300,14 @@ function _add_index($table, $indexname, $fieldlist) {
 }
 
 function upgrade_1_mysql() {
+    #
+    # creating the tables in this very old layout (pre 2.1) causes trouble if the MySQL charset is not latin1 (multibyte vs. index length)
+    # therefore:
+
+        return; # <-- skip running this function at all.
+
+    # (remove the above "return" if you really want to start with a pre-2.1 database layout)
+
     // CREATE MYSQL DATABASE TABLES.
     $admin = table_by_key('admin');
     $alias = table_by_key('alias');
@@ -399,6 +407,14 @@ function upgrade_1_mysql() {
 }
 
 function upgrade_2_mysql() {
+    #
+    # updating the tables in this very old layout (pre 2.1) causes trouble if the MySQL charset is not latin1 (multibyte vs. index length)
+    # therefore:
+
+        return; # <-- skip running this function at all.
+
+    # (remove the above "return" if you really want to update a pre-2.1 database)
+
     # upgrade pre-2.1 database
     # from TABLE_BACKUP_MX.TXT
     $table_domain = table_by_key ('domain');
@@ -537,6 +553,11 @@ function upgrade_2_pgsql() {
 }
 
 function upgrade_3_mysql() {
+    #
+    # updating the tables in this very old layout (pre 2.1) causes trouble if the MySQL charset is not latin1 (multibyte vs. index length)
+    # therefore:
+        return; # <-- skip running this function at all.
+
     # upgrade pre-2.1 database
     # from TABLE_CHANGES.TXT
     $table_admin = table_by_key ('admin');
