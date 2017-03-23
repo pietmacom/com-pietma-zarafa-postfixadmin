@@ -553,6 +553,11 @@ function upgrade_2_pgsql() {
 }
 
 function upgrade_3_mysql() {
+    #
+    # updating the tables in this very old layout (pre 2.1) causes trouble if the MySQL charset is not latin1 (multibyte vs. index length)
+    # therefore:
+        return; # <-- skip running this function at all.
+
     # upgrade pre-2.1 database
     # from TABLE_CHANGES.TXT
     $table_admin = table_by_key ('admin');
