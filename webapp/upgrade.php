@@ -1450,6 +1450,19 @@ function upgrade_1798() {
     _db_add_field('domain', 'dkim_key',   "TEXT {LATIN1} DEFAULT ''", 'dkim_selector');
 }
 
+function upgrade_1799() {
+    db_query_parsed("
+    CREATE VIEW opendkim AS 
+	SELECT 	domain,
+		dkim_selector,
+		dkim_key
+	FROM " . table_by_key ('domain') . "
+	WHERE	dkim_selector is not null
+		AND dkim_selector <> ''
+		AND dkim_key is not null
+		AND dkim_key <> '';");
+}
+
 # TODO MySQL:
 # - various varchar fields do not have a default value
 #   https://sourceforge.net/projects/postfixadmin/forums/forum/676076/topic/3419725
