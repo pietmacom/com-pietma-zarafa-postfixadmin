@@ -115,7 +115,11 @@ smtp_sasl_password_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/f
     proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_dstaddress_to_credentials.mysql,
     proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/domain_at-domain_to_credentials.mysql
 
-
+# opendkim from domain
+milter_default_action   = accept
+milter_protocol         = 6
+smtpd_milters           = unix:/run/opendkim/opendkim.sock
+non_smtpd_milters       = $smtpd_milters
 
 # anti spam
 smtpd_helo_required = yes
