@@ -1452,7 +1452,7 @@ function upgrade_1798() {
 
 function upgrade_1799() {
     db_query_parsed("
-    CREATE VIEW opendkim AS 
+    CREATE OR REPLACE VIEW opendkim AS 
 	SELECT 	domain,
 		dkim_selector,
 		dkim_key
