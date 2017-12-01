@@ -30,7 +30,7 @@ if ( $CONF['configured'] === TRUE )
 
 if(isset($CONF['configured'])) {
     if($CONF['configured'] == FALSE) {
-        die("Please run the installation script first - /usr/share/doc/zarafa-postfixadmin/pietma/install.sh");
+        die("Please run the installation script first - /usr/share/doc/kopano-postfixadmin/pietma/install.sh");
         // die("Please edit config.inc.php - change \$CONF['configured'] to true after setting your database settings");
     }
 }

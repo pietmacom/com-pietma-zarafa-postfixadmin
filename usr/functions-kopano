@@ -1,13 +1,13 @@
 #!/bin/sh -e
 
-source $(dirname $0)/config-zarafa
+source $(dirname $0)/config-kopano
 
 add_delegate() {
 	local _zusername=$1
 	local _znewdelegateusername=$2
 	
 	echo "Adding delegate ${_znewdelegateusername} for user ${_zusername}"
-	$ZARAFAADMIN -u "${_zusername}" --add-sendas "${_znewdelegateusername}"
+	$KOPANOADMIN -u "${_zusername}" --add-sendas "${_znewdelegateusername}"
 }
 
 remove_all_delegates() {
@@ -31,7 +31,7 @@ remove_all_delegates() {
 		fi
 		
 		echo "Removing delegate ${_zdelegateusername} from user ${_zusername}"
-		$ZARAFAADMIN -u "${_zusername}" --del-sendas "${_zdelegateusername}"
+		$KOPANOADMIN -u "${_zusername}" --del-sendas "${_zdelegateusername}"
 	done
 }
 
@@ -42,7 +42,7 @@ create_user() {
 	local _active=$4
 
 	echo "Creating user ${_email}"
-        # zarafa defines inactive users
+        # kopano defines inactive users
 	if [[ ${_active} == "0" ]];
 	then
 		local _inactive="1"
@@ -50,14 +50,14 @@ create_user() {
 		local _inactive="0"
 	fi
 
-	# zarafa doesn't allow empty full names
+	# kopano doesn't allow empty full names
 	if [[ -z ${_name} ]];
 	then
 		local _name=$(echo "${_email}" | sed "s/@.*//g")
 	fi
 
-	$ZARAFAADMIN -c "${_email}" -p "${_password}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
-	$ZARAFAADMIN --create-store "${_email}"
+	$KOPANOADMIN -c "${_email}" -p "${_password}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
+	$KOPANOADMIN --create-store "${_email}"
 }
 
 edit_user() {
@@ -68,7 +68,7 @@ edit_user() {
 	local _active=$5
 
 	echo "Updating user ${_zusername} with email ${_email}"	    
-	# zarafa defines inactive users
+	# kopano defines inactive users
 	if [[ ${_active} == "0" ]];
 	then
 		local _inactive="1"
@@ -76,7 +76,7 @@ edit_user() {
 		local _inactive="0"
 	fi
 
-	# zarafa doesn't allow empty full names
+	# kopano doesn't allow empty full names
 	if [[ -z ${_name} ]];
 	then
 		local _name=$(echo "${_email}" | sed "s/@.*//g")
@@ -86,18 +86,18 @@ edit_user() {
 	if [[ ${_password} == "" ]];
 	then
 		echo "Password unchanged"	
-		$ZARAFAADMIN -u "${_zusername}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
+		$KOPANOADMIN -u "${_zusername}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
 	else
 		echo "Password changed"
-		$ZARAFAADMIN -u "${_zusername}" -p "${_password}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
+		$KOPANOADMIN -u "${_zusername}" -p "${_password}" -f "${_name}" -e "${_email}" -a "0" -n "${_inactive}"
 	fi            
                 
 	# check for existing store              
-	$ZARAFAADMIN --details "${_zusername}" > /dev/null
+	$KOPANOADMIN --details "${_zusername}" > /dev/null
 	if [[ $? -ne 0 ]];
 	then
 		echo "Reattache store to user ${_zusername}"
-		$ZARAFAADMIN -u "${_zusername}" --hook-store "${_zuserstore}"
+		$KOPANOADMIN -u "${_zusername}" --hook-store "${_zuserstore}"
 	fi
 }
 
@@ -107,7 +107,7 @@ delete_user() {
 	echo "Deleting user ${_zusername}"
 	local _zuserstore=$($ZMYSQLEXEC "SELECT HEX(guid) FROM stores WHERE user_name='${_zusername}';")
 
-	$ZARAFAADMIN --unhook-store "${_zusername}"
-	$ZARAFAADMIN --remove-store "${_zuserstore}"
-	$ZARAFAADMIN -d "${_zusername}"
+	$KOPANOADMIN --unhook-store "${_zusername}"
+	$KOPANOADMIN --remove-store "${_zuserstore}"
+	$KOPANOADMIN -d "${_zusername}"
 }

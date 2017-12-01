@@ -3,7 +3,7 @@ Description=Fetchmail
 After=network.target mysqld.service
 
 [Service]
-ExecStart=/bin/sh -c "/usr/bin/perl /usr/share/zarafa-postfixadmin/fetchmail.pl"
+ExecStart=/bin/sh -c "/usr/bin/perl /usr/share/kopano-postfixadmin/fetchmail.pl"
 User=fetchmail
 Group=nobody
 

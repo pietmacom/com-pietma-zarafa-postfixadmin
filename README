@@ -1,10 +1,10 @@
 INTRODUCTION
 
- This document wants to give an insight to zarafa-postfixadmin and the reason it
+ This document wants to give an insight to kopano-postfixadmin and the reason it
  was invented.
  
  Small office or home setups are not connected to LDAP, Active Directory or
- other enterprise user management systems. For this purpose zarafa-server's
+ other enterprise user management systems. For this purpose kopano-server's
  come with an integrated command line user management plugin. Badly persons
  who are responsible for mailbox administration don't alway have technical
  skills or command line root access. This gap is filled perfectly by Postfix Admin.
@@ -12,19 +12,19 @@ INTRODUCTION
  Postfix Admin is a web based interface used to manage mailboxes, virtual
  domains and aliases.
  
- Zarafa-Postfixadmin extends its function so it can manage zarafa, too. Basically it
+ Kopano-Postfixadmin extends its function so it can manage kopano, too. Basically it
  consists of two parts.
  
   - Customization to the official customiziation interface
   - Worker-Service that walks the Postfix Admin log and runs
-    the actions to zarafa-admin
+    the actions to kopano-admin
     
     
 INSTALLATION FROM SOURCE
 
  Sometimes shellscripts say more than a thousand words.
  
-    https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=zarafa-postfixadmin
+    https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=kopano-postfixadmin
 
 INSTALLATION FROM ARCHLINUX PACKAGE
 
@@ -40,13 +40,13 @@ INSTALLATION FROM ARCHLINUX PACKAGE
 
  Install the packages
     
-    sudo pacman -Sy zarafa-postfixadmin
+    sudo pacman -Sy kopano-postfixadmin
 
 CONFIGURATION
 
  Insert in /etc/nginx/nginx.conf
  
-    In any server block -> include /etc/webapps/zarafa-postfixadmin/nginx-location.conf; 
+    In any server block -> include /etc/webapps/kopano-postfixadmin/nginx-location.conf; 
 
  Insert in /etc/php/php-fpm.conf 
  
@@ -54,78 +54,78 @@ CONFIGURATION
 
  Run
  
-    sudo /usr/share/doc/zarafa-postfixadmin/install
+    sudo /usr/share/doc/kopano-postfixadmin/install
     sudo systemctl restart nginx
     sudo systemctl restart php-fpm
-    sudo systemctl enable zarafa-postfixadmin.service
-    sudo systemctl start zarafa-postfixadmin.service
+    sudo systemctl enable kopano-postfixadmin.service
+    sudo systemctl start kopano-postfixadmin.service
  
  Visit and create a superadmin account
  
-    https://YOUR_HOSTNAME/zarafa-postfixadmin/setup.php
+    https://YOUR_HOSTNAME/kopano-postfixadmin/setup.php
 
 
 DIFFERENCES TO WELL KNOWN POSTFIXADMIN
 
  - Mailbox passwords are not hidden
- - Mailbox passwords are only treated as start password and deleted after transfer to Zarafa
- - Mailbox passwords are only managed by Zarafas DB-Plugin
+ - Mailbox passwords are only treated as start password and deleted after transfer to Kopano
+ - Mailbox passwords are only managed by Kopanos DB-Plugin
  - Due to transfered and afterwards deleted mailbox password, user login in postfixadmin is disabled
 
 USE CASES 
 
- This part should show the supported actions you can take in Zarafa-Postfixadmin and which change they cause in Zarafa. Actions causing the same change are grouped together.
+ This part should show the supported actions you can take in Kopano-Postfixadmin and which change they cause in Kopano. Actions causing the same change are grouped together.
 
  Domain Use Cases
 
      1) Create Domain
      2) Edit Domain
      3) Delete Domain
-      - Action is skipped (No change to Zarafa)
+      - Action is skipped (No change to Kopanoe)
 
 
  Mailbox Use Cases
 
      1) Create Mailbox - Given password
      2) Create Mailbox - Generated password (empty field)
-      - Create Zarafa account with username=email, email, full name, password, active state
+      - Create Kopano account with username=email, email, full name, password, active state
       - Remove mailbox password from Postfixadmin
     
-     3) Create Mailbox - Existing Zarafa account (with same email)
-      - Update Zarafa accounts full name, password, active state
+     3) Create Mailbox - Existing Kopano account (with same email)
+      - Update Kopano accounts full name, password, active state
     
      4) Edit Mailbox - Name
      5) Edit Mailbox - Active state
-      - Update Zarafa accounts full name, active state
+      - Update Kopano accounts full name, active state
     
      6) Edit Mailbox - Empty Name 
       - As 4), but takes username from local part of email (me@test.de -> me)
      
      7) Edit Mailbox - Password
-      - Update Zarafa accounts full name, password, active state
+      - Update Kopano accounts full name, password, active state
       - Remove mailbox password from Postfixadmin 
      
      8) Delete Mailbox
-      - Deletes Zarafa account and userstore 
+      - Deletes Kopano account and userstore 
        
        
  Alias Use Cases
     
-     1) Create Alias - To destination unknown in Zarafa
-      - Action is skipped (No change to Zarafa)
+     1) Create Alias - To destination unknown in Kopano
+      - Action is skipped (No change to Kopano)
       
-     2) Create Alias - To destination known in Zarafa
-      - Create inactive Zarafa account with username=alias, email=alias, full name is taken from local part of email (me@test.de -> me), random password
+     2) Create Alias - To destination known in Kopano
+      - Create inactive Kopano account with username=alias, email=alias, full name is taken from local part of email (me@test.de -> me), random password
       - Add destination in sendas
     
      4) Edit Alias - Active state
       - Remove all destinations from sendas
       - If active -> Add destination in sendas
     
-     4) Edit Alias - To destination unknown in Zarafa
+     4) Edit Alias - To destination unknown in Kopanp
      5) Delete Alias
       - Remove all destinations from sendas
-      - Delete inactive Zarafa account
+      - Delete inactive Kopano account
  
 
   

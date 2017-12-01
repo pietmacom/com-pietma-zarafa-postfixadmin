@@ -1,15 +1,15 @@
 #!/bin/sh -e
 
 #
-# https://git.pietma.com/pietma/com-pietma-zarafa-postfixadmin
+# https://git.pietma.com/pietma/com-pietma-kopano-postfixadmin
 #
 
-# include zarafa functions
-source $(dirname $0)/config-zarafa
+# include kopano functions
+source $(dirname $0)/config-kopano
 source $(dirname $0)/config-postfix
-source $(dirname $0)/functions-zarafa
+source $(dirname $0)/functions-kopano
 
-_lastlog="/var/lib/zarafa-postfixadmin/lastlog"
+_lastlog="/var/lib/kopano-postfixadmin/lastlog"
 
 # use only new log entries "
 if [[ ! -e ${_lastlog} ]];
@@ -166,7 +166,7 @@ do
 		delete*)
 			if [[ -z ${_zuser} ]];
 			then
-				echo "User with email ${_ldata} not found in Zarafa"
+				echo "User with email ${_ldata} not found in Kopano"
 				echo "${_ltimestamp}" > ${_lastlog}			
 				continue
 			fi
@@ -174,7 +174,7 @@ do
 		edit*)
 			if [[ -z ${_zuser} ]];
 			then
-				echo "User with email ${_ldata} not found in Zarafa"
+				echo "User with email ${_ldata} not found in Kopano"
 				echo "${_ltimestamp}" > ${_lastlog}
 				continue
 			fi

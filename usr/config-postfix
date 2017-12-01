@@ -6,7 +6,7 @@ MYSQL=$(which mysql)
 # SETTINGS FROM Postfixadmin
 _settings=$($PHP --no-php-ini -d open_basedir=NULL << 'EOF'
 <?
-    include('/usr/share/webapps/zarafa-postfixadmin/config.inc.php'); 
+    include('/usr/share/webapps/kopano-postfixadmin/config.inc.php'); 
     echo $CONF['configured'] . "\n"; 		#1
     echo $CONF['database_host'] . "\n";		#2
     echo $CONF['database_user'] . "\n";		#3

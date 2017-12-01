@@ -3,7 +3,7 @@
 /* 
  * THIS FILE CONTAINS COSTUMIZATIONS TO POSTFIXADMIN
  *
- * See https://git.pietma.com/pietma/com-pietma-zarafa-postfixadmin
+ * See https://git.pietma.com/pietma/com-pietma-kopano-postfixadmin
  */
 
 $CONF['generate_password'] = 'YES';
@@ -61,7 +61,7 @@ function language_hook($PALANG, $language) {
             $PALANG['pAdminEdit_domain_dst_password'] = 'Outbound Password';
             $PALANG['pAdminEdit_domain_desc_dst_password'] = 'SMTP Password';
 
-            $PALANG['pCreate_mailbox_password_text'] = 'Initial password (transferred / generated when empty). Please change in Zarafa!';
+            $PALANG['pCreate_mailbox_password_text'] = 'Initial password (transferred / generated when empty). Please change in Kopano!';
 
             $PALANG['pFetchmail_field_src_server'] = 'Inbound Server';
             $PALANG['pFetchmail_desc_src_server'] = 'POP/IMAP Server';
@@ -79,8 +79,8 @@ $CONF['language_hook'] = 'language_hook';
 
 
 // LOAD SETTINGS
-if (file_exists('/etc/webapps/zarafa-postfixadmin/config.local.php')) {
-    include('/etc/webapps/zarafa-postfixadmin/config.local.php');
+if (file_exists('/etc/webapps/kopano-postfixadmin/config.local.php')) {
+    include('/etc/webapps/kopano-postfixadmin/config.local.php');
 }
 
 ?>

@@ -1,9 +1,9 @@
 #!/bin/bash -e
 
 _basedir="$(dirname $0)"
-_etc="/etc/webapps/zarafa-postfixadmin"
-_databasename="zarafapostfixadmin"
-_databaseuser="zarafapostfixadmin"
+_etc="/etc/webapps/kopano-postfixadmin"
+_databasename="kopanopostfixadmin"
+_databaseuser="kopanopostfixadmin"
 
 function setup_password() {
 	local _salt=$(date +%s)"*127.0.0.1*"$(shuf -i 0-60000 -n 1)
@@ -18,7 +18,7 @@ function credentials() {
 	local _databasename="$4"
 
 	echo "[....] Set credentials"	
-	# zarafa postfixadmin config
+	# kopano postfixadmin config
 	sed -i -e "s/\(configured']\s*=\s*\)\(.*\)\(;$\)/\1true\3/" ${_etc}/config.local.php
 	sed -i -e "s/\(database_type']\s*=\s*\)\(.*\)\(;$\)/\1'mysql'\3/" ${_etc}/config.local.php
 	sed -i -e "s/\(database_host']\s*=\s*\)\(.*\)\(;$\)/\1'localhost:\/run\/mysqld\/mysqld.sock'\3/" ${_etc}/config.local.php
@@ -65,7 +65,7 @@ mysqlexec="${mysql} -s -N -e"
 
 if [[ -z $($mysqlexec "show databases like '${_databasename}';") ]];
 then
-    echo "[....] Create Zarafa-Postfixadmin database"
+    echo "[....] Create Kopano-Postfixadmin database"
     _databasepassword=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c16)
     if [[ -z $($mysqlexec "use mysql; select * from user where user ='${_databaseuser}';") ]];
     then
@@ -75,13 +75,13 @@ then
     fi
     $mysqlexec "CREATE DATABASE ${_databasename} CHARACTER SET latin1;"
     $mysqlexec "GRANT ALL PRIVILEGES ON ${_databasename} . * TO '${_databaseuser}'@'localhost';"
-    echo "[DONE] Create Zarafa-Postfixadmin database"
+    echo "[DONE] Create Kopano-Postfixadmin database"
     
     credentials "${_etc}" "${_databaseuser}" "${_databasepassword}" "${_databasename}"
 
     # setup.php => create tables
     echo "[....] Install database tables (this will take a while ~1min)"
-    if _setup_output=$(lynx -image_links -nolist -nonumbers -hiddenlinks=ignore --dump https://localhost/zarafa-postfixadmin/setup.php) ;
+    if _setup_output=$(lynx -image_links -nolist -nonumbers -hiddenlinks=ignore --dump https://localhost/kopano-postfixadmin/setup.php) ;
     then
 		_setup_done="1"
 		echo "${_setup_output}"
@@ -89,16 +89,16 @@ then
 	
 		# start services
 		echo
-		read -p ":: Enable and start services ZARAFA-POSTFIXADMIN, FETCHMAIL-POSTFIXADMIN, POSTFIX [Y/n] " _response
+		read -p ":: Enable and start services KOPANO-POSTFIXADMIN, FETCHMAIL-POSTFIXADMIN, POSTFIX [Y/n] " _response
 		echo
 		if [[ "${_response,,}" = "y" ]];
 		then
 			echo "[....] Enable and start services"
-			systemctl enable zarafa-postfixadmin
+			systemctl enable kopano-postfixadmin
 			systemctl enable fetchmail-postfixadmin.timer
 			systemctl enable postfix
 
-			systemctl start zarafa-postfixadmin
+			systemctl start kopano-postfixadmin
 			systemctl start fetchmail-postfixadmin.timer
 			systemctl start postfix
 
@@ -108,21 +108,21 @@ then
 			echo "[SKIP] Enable and start services"
 		fi
 
-		# import zarafa users
+		# import kopano users
 		echo
-		read -p ":: Import Zarafa users [Y/n] " _response
+		read -p ":: Import Kopano users [Y/n] " _response
 		echo
 		if [[ "${_response,,}" = "y" ]];
 		then
-			echo "[....] Import Zarafa users"
-			$mysql < ${_basedir}/import-from-zarafa.sql
-			echo "[DONE] Import Zarafa users"
+			echo "[....] Import Kopano users"
+			$mysql < ${_basedir}/import-from-kopano.sql
+			echo "[DONE] Import Kopano users"
 		else
-			echo "[SKIP] Import Zarafa users"
+			echo "[SKIP] Import Kopano users"
 		fi
     else
 		_setup_done="0"
-		echo "[SKIP] Install database tables - Could not open https://localhost/zarafa-postfixadmin/setup.php"
+		echo "[SKIP] Install database tables - Could not open https://localhost/kopano-postfixadmin/setup.php"
     fi
 
     # super password
@@ -133,7 +133,7 @@ then
     echo
     echo "1.) Please open the setup page. The database is created during opening."
     echo
-    echo "   https://HOSTNAME/zarafa-postfixadmin/setup.php"
+    echo "   https://HOSTNAME/kopano-postfixadmin/setup.php"
     echo 
     echo "2.) Create admin account with super password and write it down."
     echo
@@ -143,8 +143,8 @@ then
     then
 		echo "3.) Enable, start services and reload postfix configs."
 		echo
-		echo "   $ systemctl enable zarafa-postfixadmin"
-		echo "   $ systemctl start zarafa-postfixadmin"
+		echo "   $ systemctl enable kopano-postfixadmin"
+		echo "   $ systemctl start kopano-postfixadmin"
 		echo
 		echo "   $ systemctl enable fetchmail-postfixadmin.timer"
 		echo "   $ systemctl start fetchmail-postfixadmin.timer"
@@ -159,11 +159,11 @@ then
     echo "Read More"
     echo
     echo "   https://wiki.archlinux.org/index.php/MySQL"
-    echo "   https://pietma.com/install-run-and-access-zarafa-postfix-admin/"
+    echo "   https://pietma.com/install-run-and-access-kopano-postfix-admin/"
     echo
 else
     echo "[SKIP] Install database  - Database found"
 
-    source /usr/share/zarafa-postfixadmin/config-postfix
+    source /usr/share/kopano-postfixadmin/config-postfix
     credentials "${_etc}" "${_database_user}" "${_database_password}" "${_database_name}"    
 fi

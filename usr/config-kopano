@@ -1,13 +1,13 @@
 #!/bin/sh -e
 
 MYSQL=$(which mysql)
-ZARAFAADMIN=$(which zarafa-admin)
+KOPANOADMIN=$(which kopano-admin)
 
-# SETINGS FROM ZARAFA
-_zsettings="/etc/zarafa/server.cfg"
+# SETINGS FROM KOPANO
+_zsettings="/etc/kopano/server.cfg"
 if [[ ! -e ${_zsettings} ]];
 then
-    echo "Zarafa is not set up."
+    echo "Kopano is not set up."
     exit                
 fi   
 

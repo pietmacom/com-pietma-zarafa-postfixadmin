@@ -1,0 +1,14 @@
+[Unit]
+Description=Description=kopano-postfixadmin
+Wants=mysqld.service kopano-server.service
+After=mysqld.service kopano-server.service
+
+[Service]
+Type=simple
+ExecStart=/usr/share/kopano-postfixadmin/kopano-postfixadmin
+WorkingDirectory=/var/lib/kopano-postfixadmin
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

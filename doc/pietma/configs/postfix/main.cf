@@ -31,8 +31,8 @@ debugger_command =
 smtp_use_tls=yes
 smtp_tls_security_level = may
 smtp_tls_note_starttls_offer = yes
-smtp_tls_cert_file = /etc/ssl/private/zarafa.crt
-smtp_tls_key_file = /etc/ssl/private/zarafa.key
+smtp_tls_cert_file = /etc/ssl/private/kopano.crt
+smtp_tls_key_file = /etc/ssl/private/kopano.key
 
 # encryption client
 smtpd_use_tls = yes
@@ -47,19 +47,19 @@ smtpd_tls_session_cache_timeout = 3600s
 # encryption perfect forward secrecy - https://sys4.de/de/blog/2013/08/14/postfix-tls-forward-secrecy/
 tls_preempt_cipherlist = yes
 smtpd_tls_eecdh_grade = strong
-smtpd_tls_dh512_param_file = /etc/ssl/private/zarafa.dh
-smtpd_tls_dh1024_param_file = /etc/ssl/private/zarafa.dh
+smtpd_tls_dh512_param_file = /etc/ssl/private/kopano.dh
+smtpd_tls_dh1024_param_file = /etc/ssl/private/kopano.dh
 
 
-# zarafa dagent
+# kopano dagent
 virtual_transport = lmtp:127.0.0.1:2003
 
-# zarafa gateway authentification before accepting relay
+# kopano gateway authentification before accepting relay
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_path = smtpd
 broken_sasl_auth_clients = yes
 
-# zarafa-postfixadmin
+# kopano-postfixadmin
 proxy_read_maps = $local_recipient_maps,
 	$mydestination,
 	$virtual_alias_maps,
@@ -89,14 +89,14 @@ proxy_read_maps = $local_recipient_maps,
 	$smtp_sasl_password_maps
 
 virtual_mailbox_domains = 
-    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/domain_domain_to_domain.mysql
+    proxy:mysql:/etc/webapps/kopano-postfixadmin/postfix/domain_domain_to_domain.mysql
 
 virtual_mailbox_maps = 
-    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/mailbox_username_to_username.mysql
+    proxy:mysql:/etc/webapps/kopano-postfixadmin/postfix/mailbox_username_to_username.mysql
 
 virtual_alias_maps = 
-    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/alias_address_to_goto.mysql,
-    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/aliasdomain_at-aliasdomain_to_at-targetdomain.mysql
+    proxy:mysql:/etc/webapps/kopano-postfixadmin/postfix/alias_address_to_goto.mysql,
+    proxy:mysql:/etc/webapps/kopano-postfixadmin/postfix/aliasdomain_at-aliasdomain_to_at-targetdomain.mysql
 
 alias_maps = 
 
@@ -105,15 +105,15 @@ smtp_sasl_auth_enable = yes
 smtp_sasl_security_options = noanonymous
 smtp_sasl_mechanism_filter = plain
 smtp_sender_dependent_authentication = yes
-sender_canonical_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_mailbox_to_dstaddress.mysql
+sender_canonical_maps = proxy:mysql:/etc/webapps/kopano-postfixadmin/postfix/fetchmail_mailbox_to_dstaddress.mysql
 
-sender_dependent_relayhost_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_mailbox_to_dstserver.mysql,
-    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_dstaddress_to_dstserver.mysql,
-    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/domain_at-domain_to_dstserver.mysql
+sender_dependent_relayhost_maps = proxy:mysql:/etc/webapps/kopano-postfixadmin/postfix/fetchmail_mailbox_to_dstserver.mysql,
+    proxy:mysql:/etc/webapps/kopano-postfixadmin/postfix/fetchmail_dstaddress_to_dstserver.mysql,
+    proxy:mysql:/etc/webapps/kopano-postfixadmin/postfix/domain_at-domain_to_dstserver.mysql
 
-smtp_sasl_password_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_mailbox_to_credentials.mysql,
-    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_dstaddress_to_credentials.mysql,
-    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/domain_at-domain_to_credentials.mysql
+smtp_sasl_password_maps = proxy:mysql:/etc/webapps/kopano-postfixadmin/postfix/fetchmail_mailbox_to_credentials.mysql,
+    proxy:mysql:/etc/webapps/kopano-postfixadmin/postfix/fetchmail_dstaddress_to_credentials.mysql,
+    proxy:mysql:/etc/webapps/kopano-postfixadmin/postfix/domain_at-domain_to_credentials.mysql
 
 
 
