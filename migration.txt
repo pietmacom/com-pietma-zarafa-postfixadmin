@@ -1,0 +1,226 @@
+./README: This document wants to give an insight to zarafa-postfixadmin and the reason it
+./README: other enterprise user management systems. For this purpose zarafa-server's
+./README: Zarafa-Postfixadmin extends its function so it can manage zarafa, too. Basically it
+./README:    the actions to zarafa-admin
+./README:    https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=zarafa-postfixadmin
+./README:    sudo pacman -Sy zarafa-postfixadmin
+./README:    In any server block -> include /etc/webapps/zarafa-postfixadmin/nginx-location.conf; 
+./README:    sudo /usr/share/doc/zarafa-postfixadmin/install
+./README:    sudo systemctl enable zarafa-postfixadmin.service
+./README:    sudo systemctl start zarafa-postfixadmin.service
+./README:    https://YOUR_HOSTNAME/zarafa-postfixadmin/setup.php
+./usr/worker:# https://git.pietma.com/pietma/com-pietma-zarafa-postfixadmin
+./usr/worker:# include zarafa functions
+./usr/worker:source $(dirname $0)/config-zarafa
+./usr/worker:source $(dirname $0)/functions-zarafa
+./usr/worker:_lastlog="/var/lib/zarafa-postfixadmin/lastlog"
+./usr/config-postfix:    include('/usr/share/webapps/zarafa-postfixadmin/config.inc.php'); 
+./usr/fetchmail.pl:if (-f "/etc/webapps/zarafa-postfixadmin/fetchmail.conf") {
+./usr/fetchmail.pl:	require "/etc/webapps/zarafa-postfixadmin/fetchmail.conf";
+./usr/functions-zarafa:source $(dirname $0)/config-zarafa
+./usr/functions-zarafa:        # zarafa defines inactive users
+./usr/functions-zarafa:	# zarafa doesn't allow empty full names
+./usr/functions-zarafa:	# zarafa defines inactive users
+./usr/functions-zarafa:	# zarafa doesn't allow empty full names
+./usr/config-zarafa:ZARAFAADMIN=$(which zarafa-admin)
+./usr/config-zarafa:_zsettings="/etc/zarafa/server.cfg"
+./etc/nginx-location.conf:        location /zarafa-postfixadmin {
+./etc/nginx-location.conf:        	fastcgi_pass    unix:/run/php-fpm/zarafa-postfixadmin.sock;
+./etc/nginx-ssl.example.conf:        ## openssl genrsa -out /etc/ssl/private/zarafa.key 4096
+./etc/nginx-ssl.example.conf:        ## openssl req -new -sha512 -key /etc/ssl/private/zarafa.key -out /tmp/zarafa.csr
+./etc/nginx-ssl.example.conf:        ## openssl x509 -req -days 3650 -in /tmp/zarafa.csr -signkey /etc/ssl/private/zarafa.key -out /etc/ssl/private/zarafa.crt
+./etc/nginx-ssl.example.conf:        ## openssl dhparam -out /etc/ssl/private/zarafa.dh 4096
+./etc/nginx-ssl.example.conf:        ## chmod go-rwx /etc/ssl/private/zarafa.*;
+./etc/nginx-ssl.example.conf:        ## chmod u+rw /etc/ssl/private/zarafa.*
+./etc/nginx-ssl.example.conf:        ## chown root:root /etc/ssl/private/zarafa.*
+./etc/nginx-ssl.example.conf:        ssl_certificate_key /etc/ssl/private/zarafa.key;
+./etc/nginx-ssl.example.conf:        ssl_certificate /etc/ssl/private/zarafa.crt;
+./etc/nginx-ssl.example.conf:        ssl_dhparam /etc/ssl/private/zarafa.dh;
+./.git/FETCH_HEAD:052a03740802bb6b118107e245877c6e09002cdc		branch 'master' of git.pietma.com:pietma/com-pietma-zarafa-postfixadmin
+./.git/FETCH_HEAD:3d915f255e5c809246508188d5929001fa28b83d	not-for-merge	branch 'v0.45.x' of git.pietma.com:pietma/com-pietma-zarafa-postfixadmin
+./.git/FETCH_HEAD:ecdd1143063e9d8682609ed492fb5165f5170e66	not-for-merge	tag 'v0.45.3' of git.pietma.com:pietma/com-pietma-zarafa-postfixadmin
+./.git/FETCH_HEAD:7b65586a8515b1465ec9b08a8996a46134b1e538	not-for-merge	tag 'v0.45.2' of git.pietma.com:pietma/com-pietma-zarafa-postfixadmin
+./.git/logs/HEAD:0000000000000000000000000000000000000000 186d8e63229ae0b2eef10445e31631b3b71003e5 MartiMcFly <martimcfly@pietma.com> 1490195511 +0100	clone: from gitlab@git.pietma.com:pietma/com-pietma-zarafa-postfixadmin.git
+./.git/logs/HEAD:16ac5c36a56351d4fe12702eca30752bf16f818c 0fb508c76e7bccff0970da38f6feb86b74be384f MartiMcFly <martimcfly@pietma.com> 1490196065 +0100	commit: https://pietma.com/install-run-and-access-zarafa-postfix-admin/#comment-1604 ; https://sourceforge.net/p/postfixadmin/bugs/379/ ; https://github.com/postfixadmin/postfixadmin/commit/ba94c3a75ea025762ad732b1a4c735251add8b0f#diff-aa524efcdf264bcad4fe5be0020d76e1
+./.git/logs/refs/remotes/origin/HEAD:0000000000000000000000000000000000000000 186d8e63229ae0b2eef10445e31631b3b71003e5 MartiMcFly <martimcfly@pietma.com> 1490195511 +0100	clone: from gitlab@git.pietma.com:pietma/com-pietma-zarafa-postfixadmin.git
+./.git/logs/refs/heads/master:0000000000000000000000000000000000000000 186d8e63229ae0b2eef10445e31631b3b71003e5 MartiMcFly <martimcfly@pietma.com> 1490195511 +0100	clone: from gitlab@git.pietma.com:pietma/com-pietma-zarafa-postfixadmin.git
+Übereinstimmungen in Binärdatei ./.git/index
+./.git/config:	url = gitlab@git.pietma.com:pietma/com-pietma-zarafa-postfixadmin.git
+Übereinstimmungen in Binärdatei ./.git/objects/pack/pack-c4872307c9d5ac09bf07e9d37ad6639c34818d37.pack
+./.git/COMMIT_EDITMSG:https://pietma.com/install-run-and-access-zarafa-postfix-admin/#comment-1604 ; https://sourceforge.net/p/postfixadmin/bugs/379/ ; https://github.com/postfixadmin/postfixadmin/commit/ba94c3a75ea025762ad732b1a4c735251add8b0f#diff-aa524efcdf264bcad4fe5be0020d76e1
+./webapp/common.php:        die("Please run the installation script first - /usr/share/doc/zarafa-postfixadmin/pietma/install.sh");
+./webapp/index.php:        die("Please run the installation script first - /usr/share/doc/zarafa-postfixadmin/pietma/install.sh");
+./webapp/config.local.php: * See https://git.pietma.com/pietma/com-pietma-zarafa-postfixadmin
+./webapp/config.local.php:if (file_exists('/etc/webapps/zarafa-postfixadmin/config.local.php')) {
+./webapp/config.local.php:    include('/etc/webapps/zarafa-postfixadmin/config.local.php');
+./change:./README: This document wants to give an insight to zarafa-postfixadmin and the reason it
+./change:./README: other enterprise user management systems. For this purpose zarafa-server's
+./change:./README: Zarafa-Postfixadmin extends its function so it can manage zarafa, too. Basically it
+./change:./README:    the actions to zarafa-admin
+./change:./README:    https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=zarafa-postfixadmin
+./change:./README:    sudo pacman -Sy zarafa-postfixadmin
+./change:./README:    In any server block -> include /etc/webapps/zarafa-postfixadmin/nginx-location.conf; 
+./change:./README:    sudo /usr/share/doc/zarafa-postfixadmin/install
+./change:./README:    sudo systemctl enable zarafa-postfixadmin.service
+./change:./README:    sudo systemctl start zarafa-postfixadmin.service
+./change:./README:    https://YOUR_HOSTNAME/zarafa-postfixadmin/setup.php
+./change:./usr/worker:# https://git.pietma.com/pietma/com-pietma-zarafa-postfixadmin
+./change:./usr/worker:# include zarafa functions
+./change:./usr/worker:source $(dirname $0)/config-zarafa
+./change:./usr/worker:source $(dirname $0)/functions-zarafa
+./change:./usr/worker:_lastlog="/var/lib/zarafa-postfixadmin/lastlog"
+./change:./usr/config-postfix:    include('/usr/share/webapps/zarafa-postfixadmin/config.inc.php'); 
+./change:./usr/fetchmail.pl:if (-f "/etc/webapps/zarafa-postfixadmin/fetchmail.conf") {
+./change:./usr/fetchmail.pl:	require "/etc/webapps/zarafa-postfixadmin/fetchmail.conf";
+./change:./usr/functions-zarafa:source $(dirname $0)/config-zarafa
+./change:./usr/functions-zarafa:        # zarafa defines inactive users
+./change:./usr/functions-zarafa:	# zarafa doesn't allow empty full names
+./change:./usr/functions-zarafa:	# zarafa defines inactive users
+./change:./usr/functions-zarafa:	# zarafa doesn't allow empty full names
+./change:./usr/config-zarafa:ZARAFAADMIN=$(which zarafa-admin)
+./change:./usr/config-zarafa:_zsettings="/etc/zarafa/server.cfg"
+./change:./etc/nginx-location.conf:        location /zarafa-postfixadmin {
+./change:./etc/nginx-location.conf:        	fastcgi_pass    unix:/run/php-fpm/zarafa-postfixadmin.sock;
+./change:./etc/nginx-ssl.example.conf:        ## openssl genrsa -out /etc/ssl/private/zarafa.key 4096
+./change:./etc/nginx-ssl.example.conf:        ## openssl req -new -sha512 -key /etc/ssl/private/zarafa.key -out /tmp/zarafa.csr
+./change:./etc/nginx-ssl.example.conf:        ## openssl x509 -req -days 3650 -in /tmp/zarafa.csr -signkey /etc/ssl/private/zarafa.key -out /etc/ssl/private/zarafa.crt
+./change:./etc/nginx-ssl.example.conf:        ## openssl dhparam -out /etc/ssl/private/zarafa.dh 4096
+./change:./etc/nginx-ssl.example.conf:        ## chmod go-rwx /etc/ssl/private/zarafa.*;
+./change:./etc/nginx-ssl.example.conf:        ## chmod u+rw /etc/ssl/private/zarafa.*
+./change:./etc/nginx-ssl.example.conf:        ## chown root:root /etc/ssl/private/zarafa.*
+./change:./etc/nginx-ssl.example.conf:        ssl_certificate_key /etc/ssl/private/zarafa.key;
+./change:./etc/nginx-ssl.example.conf:        ssl_certificate /etc/ssl/private/zarafa.crt;
+./change:./etc/nginx-ssl.example.conf:        ssl_dhparam /etc/ssl/private/zarafa.dh;
+./change:./.git/FETCH_HEAD:052a03740802bb6b118107e245877c6e09002cdc		branch 'master' of git.pietma.com:pietma/com-pietma-zarafa-postfixadmin
+./change:./.git/FETCH_HEAD:3d915f255e5c809246508188d5929001fa28b83d	not-for-merge	branch 'v0.45.x' of git.pietma.com:pietma/com-pietma-zarafa-postfixadmin
+./change:./.git/FETCH_HEAD:ecdd1143063e9d8682609ed492fb5165f5170e66	not-for-merge	tag 'v0.45.3' of git.pietma.com:pietma/com-pietma-zarafa-postfixadmin
+./change:./.git/FETCH_HEAD:7b65586a8515b1465ec9b08a8996a46134b1e538	not-for-merge	tag 'v0.45.2' of git.pietma.com:pietma/com-pietma-zarafa-postfixadmin
+./change:./.git/logs/HEAD:0000000000000000000000000000000000000000 186d8e63229ae0b2eef10445e31631b3b71003e5 MartiMcFly <martimcfly@pietma.com> 1490195511 +0100	clone: from gitlab@git.pietma.com:pietma/com-pietma-zarafa-postfixadmin.git
+./change:./.git/logs/HEAD:16ac5c36a56351d4fe12702eca30752bf16f818c 0fb508c76e7bccff0970da38f6feb86b74be384f MartiMcFly <martimcfly@pietma.com> 1490196065 +0100	commit: https://pietma.com/install-run-and-access-zarafa-postfix-admin/#comment-1604 ; https://sourceforge.net/p/postfixadmin/bugs/379/ ; https://github.com/postfixadmin/postfixadmin/commit/ba94c3a75ea025762ad732b1a4c735251add8b0f#diff-aa524efcdf264bcad4fe5be0020d76e1
+./change:./.git/logs/refs/remotes/origin/HEAD:0000000000000000000000000000000000000000 186d8e63229ae0b2eef10445e31631b3b71003e5 MartiMcFly <martimcfly@pietma.com> 1490195511 +0100	clone: from gitlab@git.pietma.com:pietma/com-pietma-zarafa-postfixadmin.git
+./change:./.git/logs/refs/heads/master:0000000000000000000000000000000000000000 186d8e63229ae0b2eef10445e31631b3b71003e5 MartiMcFly <martimcfly@pietma.com> 1490195511 +0100	clone: from gitlab@git.pietma.com:pietma/com-pietma-zarafa-postfixadmin.git
+./change:./.git/config:	url = gitlab@git.pietma.com:pietma/com-pietma-zarafa-postfixadmin.git
+./change:./.git/COMMIT_EDITMSG:https://pietma.com/install-run-and-access-zarafa-postfix-admin/#comment-1604 ; https://sourceforge.net/p/postfixadmin/bugs/379/ ; https://github.com/postfixadmin/postfixadmin/commit/ba94c3a75ea025762ad732b1a4c735251add8b0f#diff-aa524efcdf264bcad4fe5be0020d76e1
+./change:./webapp/common.php:        die("Please run the installation script first - /usr/share/doc/zarafa-postfixadmin/pietma/install.sh");
+./change:./webapp/index.php:        die("Please run the installation script first - /usr/share/doc/zarafa-postfixadmin/pietma/install.sh");
+./change:./webapp/config.local.php: * See https://git.pietma.com/pietma/com-pietma-zarafa-postfixadmin
+./change:./webapp/config.local.php:if (file_exists('/etc/webapps/zarafa-postfixadmin/config.local.php')) {
+./change:./webapp/config.local.php:    include('/etc/webapps/zarafa-postfixadmin/config.local.php');
+./change:./php/fpm.d/zarafa-postfixadmin.conf:[zarafa-postfixadmin]
+./change:./php/fpm.d/zarafa-postfixadmin.conf:listen = /run/php-fpm/zarafa-postfixadmin.sock
+./change:./php/fpm.d/zarafa-postfixadmin.conf:# 5 Connections for  each zarafa user
+./change:./php/fpm.d/zarafa-postfixadmin.conf:php_admin_value[open_basedir] = ${open_basedir}:/usr/share/webapps/zarafa-postfixadmin:/etc/webapps/zarafa-postfixadmin:/var/lib/zarafa-postfixadmin
+./change:./doc/example-config/config.local.php:$CONF['database_name'] = 'zarafa-postfixadmin';
+./change:./doc/pietma/install.sh:_etc="/etc/webapps/zarafa-postfixadmin"
+./change:./doc/pietma/install.sh:_databasename="zarafapostfixadmin"
+./change:./doc/pietma/install.sh:_databaseuser="zarafapostfixadmin"
+./change:./doc/pietma/install.sh:	# zarafa postfixadmin config
+./change:./doc/pietma/install.sh:    if _setup_output=$(lynx -image_links -nolist -nonumbers -hiddenlinks=ignore --dump https://localhost/zarafa-postfixadmin/setup.php) ;
+./change:./doc/pietma/install.sh:			systemctl enable zarafa-postfixadmin
+./change:./doc/pietma/install.sh:			systemctl start zarafa-postfixadmin
+./change:./doc/pietma/install.sh:		# import zarafa users
+./change:./doc/pietma/install.sh:			$mysql < ${_basedir}/import-from-zarafa.sql
+./change:./doc/pietma/install.sh:		echo "[SKIP] Install database tables - Could not open https://localhost/zarafa-postfixadmin/setup.php"
+./change:./doc/pietma/install.sh:    echo "   https://HOSTNAME/zarafa-postfixadmin/setup.php"
+./change:./doc/pietma/install.sh:		echo "   $ systemctl enable zarafa-postfixadmin"
+./change:./doc/pietma/install.sh:		echo "   $ systemctl start zarafa-postfixadmin"
+./change:./doc/pietma/install.sh:    echo "   https://pietma.com/install-run-and-access-zarafa-postfix-admin/"
+./change:./doc/pietma/install.sh:    source /usr/share/zarafa-postfixadmin/config-postfix
+./change:./doc/pietma/import-from-zarafa.sql:-- mysql -uroot < import-from-zarafa.sql
+./change:./doc/pietma/import-from-zarafa.sql:-- cat import-from-zarafa.sql | sed "s/zarafapostfixadmin./replacement_zarafapostfixadmin./g" | sed "s/zarafa./replacment_zarafa./g" | mysql -uroot -p
+./change:./doc/pietma/import-from-zarafa.sql: INSERT IGNORE INTO zarafapostfixadmin.domain (domain, transport, active, created, modified) 
+./change:./doc/pietma/import-from-zarafa.sql:  FROM zarafa.objectproperty
+./change:./doc/pietma/import-from-zarafa.sql: INSERT IGNORE INTO zarafapostfixadmin.mailbox (username, name, local_part, domain, active, created, modified)
+./change:./doc/pietma/import-from-zarafa.sql:   (SELECT value FROM zarafa.objectproperty WHERE propname='fullname' AND objectid=m.objectid) AS name,
+./change:./doc/pietma/import-from-zarafa.sql:  FROM zarafa.objectproperty AS m
+./change:./doc/pietma/import-from-zarafa.sql:  LEFT JOIN zarafa.objectrelation AS r ON m.objectid=r.parentobjectid AND r.relationtype='6'
+./change:./doc/pietma/import-from-zarafa.sql: INSERT IGNORE INTO zarafapostfixadmin.alias (address, goto, domain, active, created, modified)
+./change:./doc/pietma/import-from-zarafa.sql:  FROM zarafa.objectproperty AS m
+./change:./doc/pietma/import-from-zarafa.sql:  LEFT JOIN zarafa.objectrelation AS r ON m.objectid=r.parentobjectid AND r.relationtype='6'
+./change:./doc/pietma/import-from-zarafa.sql: INSERT IGNORE INTO zarafapostfixadmin.alias (address, goto, domain, active, created, modified)
+./change:./doc/pietma/import-from-zarafa.sql:   GROUP_CONCAT((SELECT value FROM zarafa.objectproperty WHERE propname='emailaddress' AND objectid=r.objectid) SEPARATOR ', ') as goto,
+./change:./doc/pietma/import-from-zarafa.sql:  FROM zarafa.objectrelation AS r
+./change:./doc/pietma/import-from-zarafa.sql:  INNER JOIN zarafa.objectproperty AS m ON m.objectid=r.parentobjectid
+./change:./doc/pietma/configs/postfix/main.cf:smtp_tls_cert_file = /etc/ssl/private/zarafa.crt
+./change:./doc/pietma/configs/postfix/main.cf:smtp_tls_key_file = /etc/ssl/private/zarafa.key
+./change:./doc/pietma/configs/postfix/main.cf:smtpd_tls_dh512_param_file = /etc/ssl/private/zarafa.dh
+./change:./doc/pietma/configs/postfix/main.cf:smtpd_tls_dh1024_param_file = /etc/ssl/private/zarafa.dh
+./change:./doc/pietma/configs/postfix/main.cf:# zarafa dagent
+./change:./doc/pietma/configs/postfix/main.cf:# zarafa gateway authentification before accepting relay
+./change:./doc/pietma/configs/postfix/main.cf:# zarafa-postfixadmin
+./change:./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/domain_domain_to_domain.mysql
+./change:./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/mailbox_username_to_username.mysql
+./change:./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/alias_address_to_goto.mysql,
+./change:./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/aliasdomain_at-aliasdomain_to_at-targetdomain.mysql
+./change:./doc/pietma/configs/postfix/main.cf:sender_canonical_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_mailbox_to_dstaddress.mysql
+./change:./doc/pietma/configs/postfix/main.cf:sender_dependent_relayhost_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_mailbox_to_dstserver.mysql,
+./change:./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_dstaddress_to_dstserver.mysql,
+./change:./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/domain_at-domain_to_dstserver.mysql
+./change:./doc/pietma/configs/postfix/main.cf:smtp_sasl_password_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_mailbox_to_credentials.mysql,
+./change:./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_dstaddress_to_credentials.mysql,
+./change:./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/domain_at-domain_to_credentials.mysql
+./change:./systemd/zarafa-postfixadmin.service:Description=Description=zarafa-postfixadmin
+./change:./systemd/zarafa-postfixadmin.service:Wants=mysqld.service zarafa-server.service
+./change:./systemd/zarafa-postfixadmin.service:After=mysqld.service zarafa-server.service
+./change:./systemd/zarafa-postfixadmin.service:ExecStart=/usr/share/zarafa-postfixadmin/zarafa-postfixadmin
+./change:./systemd/zarafa-postfixadmin.service:WorkingDirectory=/var/lib/zarafa-postfixadmin
+./change:./systemd/fetchmail-postfixadmin.service:ExecStart=/bin/sh -c "/usr/bin/perl /usr/share/zarafa-postfixadmin/fetchmail.pl"
+./php/fpm.d/zarafa-postfixadmin.conf:[zarafa-postfixadmin]
+./php/fpm.d/zarafa-postfixadmin.conf:listen = /run/php-fpm/zarafa-postfixadmin.sock
+./php/fpm.d/zarafa-postfixadmin.conf:# 5 Connections for  each zarafa user
+./php/fpm.d/zarafa-postfixadmin.conf:php_admin_value[open_basedir] = ${open_basedir}:/usr/share/webapps/zarafa-postfixadmin:/etc/webapps/zarafa-postfixadmin:/var/lib/zarafa-postfixadmin
+./doc/example-config/config.local.php:$CONF['database_name'] = 'zarafa-postfixadmin';
+./doc/pietma/install.sh:_etc="/etc/webapps/zarafa-postfixadmin"
+./doc/pietma/install.sh:_databasename="zarafapostfixadmin"
+./doc/pietma/install.sh:_databaseuser="zarafapostfixadmin"
+./doc/pietma/install.sh:	# zarafa postfixadmin config
+./doc/pietma/install.sh:    if _setup_output=$(lynx -image_links -nolist -nonumbers -hiddenlinks=ignore --dump https://localhost/zarafa-postfixadmin/setup.php) ;
+./doc/pietma/install.sh:			systemctl enable zarafa-postfixadmin
+./doc/pietma/install.sh:			systemctl start zarafa-postfixadmin
+./doc/pietma/install.sh:		# import zarafa users
+./doc/pietma/install.sh:			$mysql < ${_basedir}/import-from-zarafa.sql
+./doc/pietma/install.sh:		echo "[SKIP] Install database tables - Could not open https://localhost/zarafa-postfixadmin/setup.php"
+./doc/pietma/install.sh:    echo "   https://HOSTNAME/zarafa-postfixadmin/setup.php"
+./doc/pietma/install.sh:		echo "   $ systemctl enable zarafa-postfixadmin"
+./doc/pietma/install.sh:		echo "   $ systemctl start zarafa-postfixadmin"
+./doc/pietma/install.sh:    echo "   https://pietma.com/install-run-and-access-zarafa-postfix-admin/"
+./doc/pietma/install.sh:    source /usr/share/zarafa-postfixadmin/config-postfix
+./doc/pietma/import-from-zarafa.sql:-- mysql -uroot < import-from-zarafa.sql
+./doc/pietma/import-from-zarafa.sql:-- cat import-from-zarafa.sql | sed "s/zarafapostfixadmin./replacement_zarafapostfixadmin./g" | sed "s/zarafa./replacment_zarafa./g" | mysql -uroot -p
+./doc/pietma/import-from-zarafa.sql: INSERT IGNORE INTO zarafapostfixadmin.domain (domain, transport, active, created, modified) 
+./doc/pietma/import-from-zarafa.sql:  FROM zarafa.objectproperty
+./doc/pietma/import-from-zarafa.sql: INSERT IGNORE INTO zarafapostfixadmin.mailbox (username, name, local_part, domain, active, created, modified)
+./doc/pietma/import-from-zarafa.sql:   (SELECT value FROM zarafa.objectproperty WHERE propname='fullname' AND objectid=m.objectid) AS name,
+./doc/pietma/import-from-zarafa.sql:  FROM zarafa.objectproperty AS m
+./doc/pietma/import-from-zarafa.sql:  LEFT JOIN zarafa.objectrelation AS r ON m.objectid=r.parentobjectid AND r.relationtype='6'
+./doc/pietma/import-from-zarafa.sql: INSERT IGNORE INTO zarafapostfixadmin.alias (address, goto, domain, active, created, modified)
+./doc/pietma/import-from-zarafa.sql:  FROM zarafa.objectproperty AS m
+./doc/pietma/import-from-zarafa.sql:  LEFT JOIN zarafa.objectrelation AS r ON m.objectid=r.parentobjectid AND r.relationtype='6'
+./doc/pietma/import-from-zarafa.sql: INSERT IGNORE INTO zarafapostfixadmin.alias (address, goto, domain, active, created, modified)
+./doc/pietma/import-from-zarafa.sql:   GROUP_CONCAT((SELECT value FROM zarafa.objectproperty WHERE propname='emailaddress' AND objectid=r.objectid) SEPARATOR ', ') as goto,
+./doc/pietma/import-from-zarafa.sql:  FROM zarafa.objectrelation AS r
+./doc/pietma/import-from-zarafa.sql:  INNER JOIN zarafa.objectproperty AS m ON m.objectid=r.parentobjectid
+./doc/pietma/configs/postfix/main.cf:smtp_tls_cert_file = /etc/ssl/private/zarafa.crt
+./doc/pietma/configs/postfix/main.cf:smtp_tls_key_file = /etc/ssl/private/zarafa.key
+./doc/pietma/configs/postfix/main.cf:smtpd_tls_dh512_param_file = /etc/ssl/private/zarafa.dh
+./doc/pietma/configs/postfix/main.cf:smtpd_tls_dh1024_param_file = /etc/ssl/private/zarafa.dh
+./doc/pietma/configs/postfix/main.cf:# zarafa dagent
+./doc/pietma/configs/postfix/main.cf:# zarafa gateway authentification before accepting relay
+./doc/pietma/configs/postfix/main.cf:# zarafa-postfixadmin
+./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/domain_domain_to_domain.mysql
+./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/mailbox_username_to_username.mysql
+./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/alias_address_to_goto.mysql,
+./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/aliasdomain_at-aliasdomain_to_at-targetdomain.mysql
+./doc/pietma/configs/postfix/main.cf:sender_canonical_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_mailbox_to_dstaddress.mysql
+./doc/pietma/configs/postfix/main.cf:sender_dependent_relayhost_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_mailbox_to_dstserver.mysql,
+./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_dstaddress_to_dstserver.mysql,
+./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/domain_at-domain_to_dstserver.mysql
+./doc/pietma/configs/postfix/main.cf:smtp_sasl_password_maps = proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_mailbox_to_credentials.mysql,
+./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/fetchmail_dstaddress_to_credentials.mysql,
+./doc/pietma/configs/postfix/main.cf:    proxy:mysql:/etc/webapps/zarafa-postfixadmin/postfix/domain_at-domain_to_credentials.mysql
+./systemd/zarafa-postfixadmin.service:Description=Description=zarafa-postfixadmin
+./systemd/zarafa-postfixadmin.service:Wants=mysqld.service zarafa-server.service
+./systemd/zarafa-postfixadmin.service:After=mysqld.service zarafa-server.service
+./systemd/zarafa-postfixadmin.service:ExecStart=/usr/share/zarafa-postfixadmin/zarafa-postfixadmin
+./systemd/zarafa-postfixadmin.service:WorkingDirectory=/var/lib/zarafa-postfixadmin
+./systemd/fetchmail-postfixadmin.service:ExecStart=/bin/sh -c "/usr/bin/perl /usr/share/zarafa-postfixadmin/fetchmail.pl"
