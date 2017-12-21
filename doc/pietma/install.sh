@@ -20,8 +20,8 @@ function credentials() {
 	echo "[....] Set credentials"	
 	# kopano postfixadmin config
 	sed -i -e "s/\(configured']\s*=\s*\)\(.*\)\(;$\)/\1true\3/" ${_etc}/config.local.php
-	sed -i -e "s/\(database_type']\s*=\s*\)\(.*\)\(;$\)/\1'mysql'\3/" ${_etc}/config.local.php
-	sed -i -e "s/\(database_host']\s*=\s*\)\(.*\)\(;$\)/\1'localhost:\/run\/mysqld\/mysqld.sock'\3/" ${_etc}/config.local.php
+	sed -i -e "s/\(database_type']\s*=\s*\)\(.*\)\(;$\)/\1'mysqli'\3/" ${_etc}/config.local.php
+	sed -i -e "s/\(database_host']\s*=\s*\)\(.*\)\(;$\)/\1'localhost'\3/" ${_etc}/config.local.php
 	sed -i -e "s/\(database_user']\s*=\s*\)\(.*\)\(;$\)/\1'${_databaseuser}'\3/" ${_etc}/config.local.php
 	sed -i -e "s/\(database_password']\s*=\s*\)\(.*\)\(;$\)/\1'${_databasepassword}'\3/" ${_etc}/config.local.php
 	sed -i -e "s/\(database_name']\s*=\s*\)\(.*\)\(;$\)/\1'${_databasename}'\3/" ${_etc}/config.local.php
