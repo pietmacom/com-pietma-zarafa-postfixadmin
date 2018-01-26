@@ -1,5 +1,12 @@
 #!/bin/bash -e
 
+while getopts :s: opt;
+do
+    case $OPTARG in
+    s) _silent="y" ;;
+    esac
+done
+
 _basedir="$(dirname $0)"
 _etc="/etc/webapps/kopano-postfixadmin"
 _databasename="kopanopostfixadmin"
@@ -38,10 +45,16 @@ function credentials() {
 	echo "[DONE] Set credentials"
 }
 
-echo
-read -p ":: Copy and override POSTFIX (extended) settings? [Y/n]" _response
-echo
-echo
+
+if [[ -z "${_silent}" ]];
+then
+    echo
+    read -p ":: Copy and override POSTFIX (extended) settings? [Y/n]" _response
+    echo
+    echo
+else
+    _response="y"
+fi
 if [[ "${_response,,}" = "y" ]];
 then
     echo "[....] Copy and override POSTFIX (extended) settings"
@@ -49,10 +62,16 @@ then
     echo "[DONE] Copy and override POSTFIX (extended) settings"
 fi
 
-echo
-read -s -p ":: Please enter MySQL Root Password (or empty)" _mysqlpassword
-echo
-echo
+
+if [[ -z "${_silent}" ]];
+then
+    echo
+    read -s -p ":: Please enter MySQL Root Password (or empty)" _mysqlpassword
+    echo
+    echo
+else
+    _mysqlpassword=""
+fi
 if [[ -z ${_mysqlpassword} ]];
 then
     echo "Continue without password"
@@ -86,11 +105,16 @@ then
 		_setup_done="1"
 		echo "${_setup_output}"
 		echo "[DONE] Install database tables"
-	
-		# start services
-		echo
-		read -p ":: Enable and start services KOPANO-POSTFIXADMIN, FETCHMAIL-POSTFIXADMIN, POSTFIX [Y/n] " _response
-		echo
+
+		# start services			
+		if [[ -z "${_silent}" ]];
+		then	
+		    echo
+		    read -p ":: Enable and start services KOPANO-POSTFIXADMIN, FETCHMAIL-POSTFIXADMIN, POSTFIX [Y/n] " _response
+		    echo
+		else
+		    _response=""
+		fi		
 		if [[ "${_response,,}" = "y" ]];
 		then
 			echo "[....] Enable and start services"
@@ -109,9 +133,14 @@ then
 		fi
 
 		# import kopano users
-		echo
-		read -p ":: Import Kopano users [Y/n] " _response
-		echo
+		if [[ -z "${_silent}" ]];
+		then			
+		    echo
+		    read -p ":: Import Kopano users [Y/n] " _response
+		    echo
+		else
+		    _response="y"
+		fi
 		if [[ "${_response,,}" = "y" ]];
 		then
 			echo "[....] Import Kopano users"
