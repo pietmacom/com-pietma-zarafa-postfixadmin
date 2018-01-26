@@ -113,7 +113,7 @@ then
 		    read -p ":: Enable and start services KOPANO-POSTFIXADMIN, FETCHMAIL-POSTFIXADMIN, POSTFIX [Y/n] " _response
 		    echo
 		else
-		    _response=""
+		    _response="n"
 		fi		
 		if [[ "${_response,,}" = "y" ]];
 		then
